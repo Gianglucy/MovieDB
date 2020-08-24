@@ -11,15 +11,16 @@ import Alamofire
 
 class UserProfileVC: UIViewController {
     
-    @IBOutlet weak var imvUser: UIImageView!
-    @IBOutlet weak var viewLanguage: UIView!
-    @IBOutlet weak var lblLanguage: UILabel!
-    @IBOutlet weak var viewName: UIView!
-    @IBOutlet weak var lblName: UILabel!
-    @IBOutlet weak var viewAdult: UIView!
-    @IBOutlet weak var lblAdult: UILabel!
-    @IBOutlet weak var viewUserName: UIView!
-    @IBOutlet weak var lblUserName: UILabel!
+    @IBOutlet weak var userImageView: UIImageView!
+    @IBOutlet weak var languageView: UIView!
+    @IBOutlet weak var languageLabel: UILabel!
+    @IBOutlet weak var nameView: UIView!
+    @IBOutlet weak var nameLabel: UILabel!
+    @IBOutlet weak var adultView: UIView!
+    @IBOutlet weak var adultLabel: UILabel!
+    @IBOutlet weak var userNameView: UIView!
+    @IBOutlet weak var userNameLabel: UILabel!
+    @IBOutlet weak var logoutButton: UIButton!
     
     let defaults = UserDefaults.standard
     var dataUser: User?
@@ -36,59 +37,73 @@ class UserProfileVC: UIViewController {
         self.title = "User Profile"
         
         self.view.backgroundColor = Colors.background
-        self.imvUser.contentMode = .scaleAspectFill
-        self.imvUser.image = UIImage(named: "ic_avatar_red")
-        self.imvUser.layer.cornerRadius = self.imvUser.layer.bounds.width / 2
+        self.userImageView.contentMode = .scaleAspectFill
+        self.userImageView.image = UIImage(named: "ic_avatar_red")
+        self.userImageView.layer.cornerRadius = self.userImageView.layer.bounds.width / 2
         
-        self.viewLanguage.layer.cornerRadius = CGFloat(Constants.cornerRadius)
-        self.viewLanguage.setGradientBackground(colorOne: Colors.greenCustome, colorTwo: Colors.blueCustome)
-        self.viewLanguage.clipsToBounds = true
-        self.lblLanguage.text = "---"
+        self.languageView.layer.cornerRadius = Constants.cornerRadius
+        self.languageView.setGradientBackground(colorOne: Colors.greenCustome, colorTwo: Colors.blueCustome)
+        self.languageView.clipsToBounds = true
+        self.languageLabel.text = "---"
         
-        self.viewName.layer.cornerRadius = CGFloat(Constants.cornerRadius)
-        self.viewName.setGradientBackground(colorOne: Colors.greenCustome, colorTwo: Colors.blueCustome)
-        self.viewName.clipsToBounds = true
-        self.lblName.text = "---"
+        self.nameView.layer.cornerRadius = Constants.cornerRadius
+        self.nameView.setGradientBackground(colorOne: Colors.greenCustome, colorTwo: Colors.blueCustome)
+        self.nameView.clipsToBounds = true
+        self.nameLabel.text = "---"
         
-        self.viewAdult.layer.cornerRadius = CGFloat(Constants.cornerRadius)
-        self.viewAdult.setGradientBackground(colorOne: Colors.greenCustome, colorTwo: Colors.blueCustome)
-        self.viewAdult.clipsToBounds = true
-        self.lblAdult.text = "---"
+        self.adultView.layer.cornerRadius = Constants.cornerRadius
+        self.adultView.setGradientBackground(colorOne: Colors.greenCustome, colorTwo: Colors.blueCustome)
+        self.adultView.clipsToBounds = true
+        self.adultLabel.text = "---"
         
-        self.viewUserName.layer.cornerRadius = CGFloat(Constants.cornerRadius)
-        self.viewUserName.setGradientBackground(colorOne: Colors.greenCustome, colorTwo: Colors.blueCustome)
-        self.viewUserName.clipsToBounds = true
-        self.lblUserName.text = "---"
+        self.userNameView.layer.cornerRadius = Constants.cornerRadius
+        self.userNameView.setGradientBackground(colorOne: Colors.greenCustome, colorTwo: Colors.blueCustome)
+        self.userNameView.clipsToBounds = true
+        self.userNameLabel.text = "---"
+        
+        self.logoutButton.backgroundColor = Colors.organgeCustome
+        self.logoutButton.layer.cornerRadius = Constants.cornerRadius
     }
     
     func requestUser(sessionID: String) {
         let parameters: [String: String] = ["session_id": sessionID]
-//        print("parameters===== \(parameters)")
         let headers: HTTPHeaders = [.authorization(bearerToken: ServerPath.accessToken)]
-        AF.request(ServerPath.accountDetail + ServerPath.apiKey, method: .get, parameters: parameters, headers: headers).validate().response{ response in
-            switch response.result {
-            case .success:
-                let userData = try? JSONDecoder().decode(User.self, from: response.data!)
-                self.dataUser = userData
-//                print("HHHHHIIIIIIIII= \(self.dataUser)")
+        AuthService.instance.requestUserDetail(url: ServerPath.accountDetail + ServerPath.apiKey, parameters: parameters, headers: headers){ isSuccess, data, error in
+            if isSuccess {
+                self.dataUser = data
                 DispatchQueue.main.async {
-                    self.lblLanguage.text = self.dataUser?.iso31661
-                    self.lblAdult.text = self.dataUser?.includeAdult?.description
-                    self.lblName.text = self.dataUser?.name
-                    self.lblUserName.text = self.dataUser?.username
-//                    self.imvUser.image = self.dataUser?.avatar?.hash ?? UIImage(named: "ic_avatar_red")
+                    self.languageLabel.text = self.dataUser?.language
+                    self.adultLabel.text = self.dataUser?.includeAdult?.description
+                    self.nameLabel.text = self.dataUser?.name
+                    self.userNameLabel.text = self.dataUser?.username
                 }
-            case let .failure(error):
-                self.alert(title: "ERROR", content: error.errorDescription!)
+            } else {
+                Alert.instance.oneOption(this: self, title: "ERROR", content: error!, titleButton: "OK") {() in }
             }
         }
     }
     
-    func alert(title: String, content: String) {
-        let alert = UIAlertController(title: title, message: content, preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "Done", style: .default, handler: {(action) in
-            self.dismiss(animated: true, completion: nil)
-        }))
-        self.present(alert, animated: true, completion: nil)
+    @IBAction func logout(_ sender: UIButton) {
+        Alert.instance.twoOption(this: self, title: "Notification", content: "Do you want to logout ?", titleButtonFirst: "Yes", titleButtonSecond: "No",
+        first: {() -> () in
+            if let sessionID = self.defaults.string(forKey: defaultsKey.sessionID) {
+                let parameters: [String: String] = ["session_id": sessionID]
+                let headers: HTTPHeaders = [.authorization(bearerToken: ServerPath.accessToken)]
+                AuthService.instance.deleteSession(url: ServerPath.deleteSession + ServerPath.apiKey, parameters: parameters, headers: headers){ isSuccess, data, error in
+                    if isSuccess {
+                        let loginVC = LoginVC(nibName: "LoginVC", bundle: nil)
+                        let keywindow = UIApplication.shared.windows.first!
+                        keywindow.rootViewController = loginVC
+                        self.defaults.set(false, forKey: defaultsKey.loginStatus)
+                        self.dismiss(animated: true, completion: nil)
+                    } else {
+                        Alert.instance.oneOption(this: self, title: "ERROR", content: error!, titleButton: "OK") {() in }
+                    }
+                }
+            }
+        },
+        second: {() -> () in
+            
+        })
     }
 }

@@ -9,10 +9,10 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="LoginVC" customModule="MovieDB" customModuleProvider="target">
             <connections>
-                <outlet property="btnLogin" destination="IAR-iQ-BtM" id="rpI-Qz-oAl"/>
-                <outlet property="imvHeader" destination="GSQ-FO-4n6" id="7kX-ak-q1L"/>
-                <outlet property="txfPass" destination="XW8-yj-iVO" id="2hh-US-5J2"/>
-                <outlet property="txfUserName" destination="4sG-y5-a2e" id="WqL-Vc-ggx"/>
+                <outlet property="loginButton" destination="IAR-iQ-BtM" id="hum-F3-3PV"/>
+                <outlet property="logoImageView" destination="GSQ-FO-4n6" id="evu-ec-qn8"/>
+                <outlet property="passTextField" destination="XW8-yj-iVO" id="rSo-gZ-F5C"/>
+                <outlet property="userNameTextField" destination="4sG-y5-a2e" id="CWc-SA-WXd"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>

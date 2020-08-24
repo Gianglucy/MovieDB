@@ -9,16 +9,17 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="UserProfileVC" customModule="MovieDB" customModuleProvider="target">
             <connections>
-                <outlet property="imvUser" destination="I6N-u1-7sx" id="UFx-bn-5ef"/>
-                <outlet property="lblAdult" destination="Bc6-H1-ySl" id="meh-WE-zRt"/>
-                <outlet property="lblLanguage" destination="LJw-nj-AzN" id="GIs-3f-tEp"/>
-                <outlet property="lblName" destination="YlY-od-LLW" id="MQH-xh-Bza"/>
-                <outlet property="lblUserName" destination="dnQ-AX-h2c" id="W0L-gL-Y2Q"/>
+                <outlet property="adultLabel" destination="Bc6-H1-ySl" id="Znq-rh-MwM"/>
+                <outlet property="adultView" destination="66Y-yM-RZQ" id="uBy-WB-e3I"/>
+                <outlet property="languageLabel" destination="LJw-nj-AzN" id="9rD-kO-u0d"/>
+                <outlet property="languageView" destination="Seg-Ij-NTg" id="e4Y-sV-2He"/>
+                <outlet property="logoutButton" destination="pnn-mq-gfk" id="gTP-Of-zgq"/>
+                <outlet property="nameLabel" destination="YlY-od-LLW" id="6uX-91-Sdp"/>
+                <outlet property="nameView" destination="nIg-0p-2Fa" id="9S3-Pb-VUp"/>
+                <outlet property="userImageView" destination="I6N-u1-7sx" id="msH-2J-5Ba"/>
+                <outlet property="userNameLabel" destination="dnQ-AX-h2c" id="HHM-4O-k5q"/>
+                <outlet property="userNameView" destination="Iqu-Mf-gbP" id="Pdx-w5-OXv"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
-                <outlet property="viewAdult" destination="66Y-yM-RZQ" id="edb-BK-out"/>
-                <outlet property="viewLanguage" destination="Seg-Ij-NTg" id="Coy-Ax-cMG"/>
-                <outlet property="viewName" destination="nIg-0p-2Fa" id="ubp-SC-YfA"/>
-                <outlet property="viewUserName" destination="Iqu-Mf-gbP" id="Oca-Hy-2vb"/>
             </connections>
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
@@ -134,6 +135,18 @@
                         <constraint firstAttribute="bottom" secondItem="dnQ-AX-h2c" secondAttribute="bottom" constant="8" id="M1O-o3-QNQ"/>
                     </constraints>
                 </view>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pnn-mq-gfk">
+                    <rect key="frame" x="16" y="567.66666666666663" width="382" height="40"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="40" id="lkg-kk-sMa"/>
+                    </constraints>
+                    <state key="normal" title="Logout">
+                        <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    </state>
+                    <connections>
+                        <action selector="logout:" destination="-1" eventType="touchUpInside" id="M0G-e1-cOD"/>
+                    </connections>
+                </button>
             </subviews>
             <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <constraints>
@@ -144,10 +157,13 @@
                 <constraint firstItem="NMX-sI-FDQ" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="16" id="HDo-8b-dFT"/>
                 <constraint firstItem="Seg-Ij-NTg" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="16" id="KM5-uB-hTr"/>
                 <constraint firstItem="E6m-UB-zU5" firstAttribute="top" secondItem="66Y-yM-RZQ" secondAttribute="bottom" constant="8" id="Ker-NS-SzC"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="pnn-mq-gfk" secondAttribute="trailing" constant="16" id="LeM-5x-lZS"/>
                 <constraint firstAttribute="trailing" secondItem="3od-J8-NV6" secondAttribute="trailing" constant="16" id="MTb-Qi-dor"/>
                 <constraint firstItem="NMX-sI-FDQ" firstAttribute="top" secondItem="Seg-Ij-NTg" secondAttribute="bottom" constant="8" id="Mnb-ir-d5J"/>
                 <constraint firstItem="Seg-Ij-NTg" firstAttribute="top" secondItem="0Aa-I9-9l9" secondAttribute="bottom" constant="8" id="NBW-Rd-ZQe"/>
                 <constraint firstItem="nIg-0p-2Fa" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="16" id="NJt-uc-HkL"/>
+                <constraint firstItem="pnn-mq-gfk" firstAttribute="top" secondItem="Iqu-Mf-gbP" secondAttribute="bottom" constant="32" id="Rbr-my-d3V"/>
+                <constraint firstItem="pnn-mq-gfk" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="16" id="UVP-jC-zZt"/>
                 <constraint firstItem="66Y-yM-RZQ" firstAttribute="top" secondItem="3od-J8-NV6" secondAttribute="bottom" constant="8" id="W4f-lw-bze"/>
                 <constraint firstItem="3od-J8-NV6" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="16" id="Y8Q-wi-82V"/>
                 <constraint firstAttribute="trailing" secondItem="NMX-sI-FDQ" secondAttribute="trailing" constant="16" id="ZzU-CJ-Q7d"/>

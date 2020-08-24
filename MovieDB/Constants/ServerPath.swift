@@ -16,5 +16,7 @@ struct ServerPath {
     static let imageURL = "https://image.tmdb.org/t/p/w500"
     static let requestToken = "https://api.themoviedb.org/3/authentication/token/new?api_key="
     static let accountDetail = "https://api.themoviedb.org/3/account?api_key="
+    static let deleteSession = "https://api.themoviedb.org/3/authentication/session?api_key="
+    
     static let accessToken = "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJiYmM0NzNjYzUzYTQyY2JjMzMzZmVhNDIzNTY2MjU1NCIsInN1YiI6IjVmMWUyOTBhMGJiMDc2MDAzNWY3ZjA3ZiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.dEbn-emvUInRLvVwEzCsU0kj-tRz2PrOfaE2u3VZhIo"
 }

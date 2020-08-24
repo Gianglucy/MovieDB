@@ -19,18 +19,14 @@ class HomeVC: UIViewController {
     }
     
     func requestToken() {
-        let headers: HTTPHeaders = [.authorization(bearerToken: ServerPath.accessToken)]
-        AF.request(ServerPath.requestToken + ServerPath.apiKey, method: .get, headers: headers).validate().responseJSON{ response in
-            switch response.result {
-            case .success:
-                let tokenData = try? JSONDecoder().decode(Session.self, from: response.data!)
-                guard let result = tokenData?.requestToken else { return }
-                self.defaults.set(result, forKey: defaultsKey.token)
-                self.createRequestTokenString(token: result)
-            case let .failure(error):
-                self.alert(title: "ERROR", content: error.errorDescription!)
+        AuthService.instance.requestToken(url: ServerPath.requestToken + ServerPath.apiKey){ isSuccess, data, error in
+            if isSuccess {
+                guard let requestTokenString = data?.requestToken else { return }
+                self.defaults.set(requestTokenString, forKey: defaultsKey.token)
+                self.createRequestTokenString(token: requestTokenString)
+            } else {
+                Alert.instance.oneOption(this: self, title: "ERROR", content: error!, titleButton: "OK") {() in }
             }
-            
         }
     }
     
@@ -43,40 +39,28 @@ class HomeVC: UIViewController {
             "request_token": token
         ]
         let headers: HTTPHeaders = [.authorization(bearerToken: ServerPath.accessToken)]
-        AF.request(ServerPath.apiLogin + ServerPath.apiKey, method: .post, parameters: parameters, headers: headers).validate().response{ response in
-            switch response.result {
-            case .success:
-                let loginData = try? JSONDecoder().decode(Session.self, from: response.data!)
-                guard let tokenRequest = loginData?.requestToken else { return }
-                self.createSession(token: tokenRequest)
-            case let .failure(error):
-                self.alert(title: "ERROR", content: error.errorDescription!)
+        AuthService.instance.requestTokenByLogin(url: ServerPath.apiLogin + ServerPath.apiKey, parameters: parameters, headers: headers){isSuccess, data, error in
+            if isSuccess {
+                guard let tokenLoginRequest = data?.requestToken else { return }
+                self.defaults.set(tokenLoginRequest, forKey: defaultsKey.token)
+                self.createSessionID(token: tokenLoginRequest)
+            } else {
+                Alert.instance.oneOption(this: self, title: "ERROR", content: error!, titleButton: "OK") {() in }
             }
         }
     }
     
-    func createSession(token: String) {
+    func createSessionID(token: String) {
         let parameters: [String: String] = ["request_token": token]
         let headers: HTTPHeaders = [.authorization(bearerToken: ServerPath.accessToken)]
-        AF.request(ServerPath.apiSessionID + ServerPath.apiKey, method: .post, parameters: parameters, headers: headers).validate().response{ response in
-            switch response.result {
-            case .success:
-                let sessionData = try? JSONDecoder().decode(Session.self, from: response.data!)
-                guard let sessionID = sessionData?.sessionId else { return }
-//                print("============ \(sessionID)")
+        AuthService.instance.requestCreateSession(url: ServerPath.apiSessionID + ServerPath.apiKey, parameters: parameters, headers: headers){isSuccess, data, error in
+            if isSuccess {
+                guard let sessionID = data?.sessionId else { return }
                 self.defaults.set(sessionID, forKey: defaultsKey.sessionID)
-            case let .failure(error):
-                self.alert(title: "ERROR", content: error.errorDescription!)
+//                print("000000000000====>> \(sessionID)")
+            } else {
+                Alert.instance.oneOption(this: self, title: "ERROR", content: error!, titleButton: "OK") {() in }
             }
         }
     }
-    
-    func alert(title: String, content: String) {
-        let alert = UIAlertController(title: title, message: content, preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "Done", style: .default, handler: {(action) in
-            self.dismiss(animated: true, completion: nil)
-        }))
-        self.present(alert, animated: true, completion: nil)
-    }
-    
 }

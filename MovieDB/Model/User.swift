@@ -11,8 +11,8 @@ import Foundation
 struct User: Codable {
     var avatar: Gravatar?
     var id: Int?
-    var iso6391: String?
-    var iso31661: String?
+    var country: String?
+    var language: String?
     var name: String?
     var includeAdult: Bool?
     var username: String?
@@ -20,8 +20,8 @@ struct User: Codable {
     enum CodingKeys: String, CodingKey {
         case avatar
         case id
-        case iso6391 = "iso_639_1"
-        case iso31661 = "iso_3166_1"
+        case country = "iso_639_1"
+        case language = "iso_3166_1"
         case name
         case includeAdult = "include_adult"
         case username

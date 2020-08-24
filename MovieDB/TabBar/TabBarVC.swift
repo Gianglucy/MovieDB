@@ -16,7 +16,6 @@ class TabBarVC: UITabBarController {
         let homeVC = HomeVC(nibName: "HomeVC", bundle: nil)
         let userProfileVC = UserProfileVC(nibName: "UserProfileVC", bundle: nil)
         
-        
         let homeNav = UINavigationController(rootViewController: homeVC)
         let userProfileNav = UINavigationController(rootViewController: userProfileVC)
         
@@ -24,12 +23,9 @@ class TabBarVC: UITabBarController {
         listViewControllers.append(userProfileNav)
         
         homeNav.tabBarItem = UITabBarItem(title: "Home", image: UIImage(systemName: "house.fill"), selectedImage: UIImage(systemName: "house.fill"))
-        homeNav.tabBarItem.tag = 0
         userProfileNav.tabBarItem = UITabBarItem(title: "Profile", image: UIImage(systemName: "person.fill"), selectedImage: UIImage(systemName: "person.fill"))
-        userProfileNav.tabBarItem.tag = 1
         
         self.setViewControllers(listViewControllers, animated: true)
         self.selectedIndex = 0
-        self.selectedViewController = homeNav
     }
 }

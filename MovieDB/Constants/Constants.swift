@@ -8,12 +8,14 @@
 
 import Foundation
 import UIKit
+import Alamofire
 
 struct Colors {
     static let red = UIColor(red: 255/255, green: 115/255, blue: 115/255, alpha: 1)
     static let greenCustome = UIColor(red: 33/255, green: 183/255, blue: 220/255, alpha: 1)
     static let blueCustome = UIColor(red: 137/255, green: 205/255, blue: 165/255, alpha: 1)
     static let background = UIColor(red: 5/255, green: 37/255, blue: 65/255, alpha: 1)
+    static let organgeCustome = UIColor(red: 222/255, green: 87/255, blue: 75/255, alpha: 1)
 }
 
 struct Fonts {
@@ -23,5 +25,28 @@ struct Fonts {
 }
 
 struct Constants {
-    static let cornerRadius = 8
+    static let cornerRadius: CGFloat = 8
+    
+    struct ProductionServer {
+        static let baseURL = "https://api.themoviedb.org/3"
+    }
+}
+
+enum HTTPHeaderField: String {
+    case authentication = "Authorization"
+    case contentType = "Content-Type"
+    case acceptType = "Accept"
+    case acceptEncoding = "Accept-Encoding"
+    case string = "String"
+    
+}
+
+enum ContentType: String {
+    case json = "Application/json"
+    case formEncode = "application/x-www-form-urlencoded"
+}
+
+enum RequestParams {
+    case body(_:Parameters)
+    case url(_:Parameters)
 }
