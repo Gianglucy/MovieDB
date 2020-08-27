@@ -7,80 +7,92 @@
 //
 
 import Foundation
-
-
-import Foundation
 import Alamofire
 
-enum APIRouter: APIConfiguration {
-    
-    case getRequestToken
-    case login(username: String, password: String, requestToken: String)
-    case getUserDetails
-  
-    
-    // MARK: - HTTPMethod
-    var method: HTTPMethod {
-        switch self {
-        case .getRequestToken:
-            return .get
-        case .login:
-            return .post
-        case .getUserDetails:
-            return .get
-        }
-    }
-    // MARK: - Parameters
-     var parameters: RequestParams {
-        switch self {
-        case .getRequestToken:
-            return .body([:])
-        case .login(let username, let password, let requestToken):
-            return .body(["username" : username, "password" : password, "request_token" : requestToken])
-        case .getUserDetails:
-            return .body([:])
-        }
+enum MovieAPI {
+    case getToken
+    case getTokenByLogin
+    case requestCreateSession
+    case getUserDetail
+    case deleteSession
+    case requestListMovie
+    case requestListMovieWithPage(page: Int)
+    case getMovieDetail(id: Int)
+}
+
+extension MovieAPI: TargetType {
+    var baseURL: String {
+        "https://api.themoviedb.org/3"
     }
     
-    // MARK: - Path
     var path: String {
         switch self {
-        case .getRequestToken:
-            return "/authentication/token/new?api_key=" + ServerPath.apiKey
-        case .login:
-            return "/authentication/token/validate_with_login?api_key=" + ServerPath.apiKey
-        case .getUserDetails:
-            return "/userDetailEndpoint"
+        case .getToken:
+            return "/authentication/token/new?api_key=\(ServerPath.apiKey)"
+        case .getTokenByLogin:
+            return "/authentication/token/validate_with_login?api_key=\(ServerPath.apiKey)"
+        case .requestCreateSession:
+            return "/authentication/session/new?api_key=\(ServerPath.apiKey)"
+        case .getUserDetail:
+            return "/account?api_key=\(ServerPath.apiKey)"
+        case .deleteSession:
+            return "/authentication/session?api_key=\(ServerPath.apiKey)"
+        case .requestListMovie:
+            return "/movie/top_rated?api_key=\(ServerPath.apiKey)&language=en-US&page=1"
+        case .requestListMovieWithPage(let page):
+            return "/movie/top_rated?api_key=\(ServerPath.apiKey)&language=en-US&page=\(page)"
+        case .getMovieDetail(let id):
+            return "/movie/\(id)?api_key=\(ServerPath.apiKey)&language=en-US"
         }
     }
     
-    // MARK: - URLRequestConvertible
-    func asURLRequest() throws -> URLRequest {
-        let url = try Constants.ProductionServer.baseURL.asURL()
-        
-        var urlRequest = URLRequest(url: url.appendingPathComponent(path))
-        
-        // HTTP Method
-        urlRequest.httpMethod = method.rawValue
-        
-        // Common Headers
-        urlRequest.setValue(ContentType.json.rawValue, forHTTPHeaderField: HTTPHeaderField.acceptType.rawValue)
-        urlRequest.setValue(ContentType.json.rawValue, forHTTPHeaderField: HTTPHeaderField.contentType.rawValue)
-        
-        // Parameters
-        switch parameters {
-            
-        case .body(let params):
-            urlRequest.httpBody = try JSONSerialization.data(withJSONObject: params, options: [])
-            
-        case .url(let params):
-                let queryParams = params.map { pair  in
-                    return URLQueryItem(name: pair.key, value: "\(pair.value)")
-                }
-                var components = URLComponents(string:url.appendingPathComponent(path).absoluteString)
-                components?.queryItems = queryParams
-                urlRequest.url = components?.url
+    var httpMethod: HTTPMethod {
+        switch self {
+        case .getToken,
+             .getUserDetail,
+             .requestListMovie,
+             .requestListMovieWithPage,
+             .getMovieDetail:
+            return .get
+        case .getTokenByLogin,
+             .requestCreateSession:
+            return .post
+        case .deleteSession:
+            return .delete
         }
-            return urlRequest
+    }
+    
+    var headers: HTTPHeaders? {
+        switch self {
+        case .getToken,
+             .requestListMovie,
+             .requestListMovieWithPage,
+             .getMovieDetail:
+            return ["Content-Type": "application/json"]
+        case .getTokenByLogin,
+             .requestCreateSession,
+             .getUserDetail,
+             .deleteSession:
+            return [.authorization(bearerToken: ServerPath.accessToken)]
+        }
+    }
+    
+    var url: URL {
+        return URL(string: self.baseURL + self.path)!
+    }
+    
+    var encoding: ParameterEncoding {
+        switch self {
+        case .getToken,
+             .getTokenByLogin,
+             .requestCreateSession,
+             .deleteSession,
+             .requestListMovie,
+             .requestListMovieWithPage,
+             .getMovieDetail:
+            return JSONEncoding.default
+        case .getUserDetail:
+            return URLEncoding.default
+        }
     }
 }

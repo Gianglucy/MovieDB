@@ -9,105 +9,105 @@
 import Foundation
 import Alamofire
 
-//typealias CommonType<T> = (T)
-//
-//protocol AuthServiceDelegate {
-//    func responseNetword(isSuccess: Bool, data: CommonType<Any>)
-//}
-
-//sunccess(aaa: Movie){}
-//sunccess(aaa: User){}
-
-//error(message: String){
-//showError(message)
-//}
-
-//HomeViewModel.exampleAAA(params) chua 2 delegate success va error
-
 class AuthService {
     
-    static let instance = AuthService()
-    typealias CompletionHandler<T> = (T)
-    let defaults = UserDefaults.standard
+    static let shared = AuthService()
     
-    func requestToken(url: String, completion: @escaping (_ isSuccess: Bool, _ data: Session?, _ error: String?)->Void ) {
-        AF.request(url, method: .get).validate().responseJSON{ response in
-            switch response.result {
-            case .success:
-                do {
-                    let session = try JSONDecoder().decode(Session.self, from: response.data!)
-                    completion(true, session, nil)
-                } catch let error {
-                    print("===>> ERROR DECODE \(error)")
-                }
-            case let .failure(error):
-                completion(false, nil, error.errorDescription ?? "error")
+    func getToken(completionHandler: @escaping (_ result: Result<Session?, ResponseError>)->()){
+        APIManager.shared.call(type: MovieAPI.getToken){(result: Result<Session?, ResponseError>) in
+            switch result {
+            case .success(let session):
+                completionHandler(.success(session))
+            case .failure(let error):
+                completionHandler(.failure(error))
             }
         }
     }
     
-    func requestTokenByLogin(url: String, parameters: [String: String], headers: HTTPHeaders?, completion: @escaping (_ isSuccess: Bool, _ data: Session?, _ error: String?)->Void ) {
-        AF.request(url, method: .post, parameters: parameters, headers: headers).validate().response{ response in
-            switch response.result {
-            case .success:
-                do {
-                    let session = try JSONDecoder().decode(Session.self, from: response.data!)
-                    completion(true, session, nil)
-                } catch let error {
-                    print("===>> ERROR DECODE \(error)")
-                }
-            case let .failure(error):
-                completion(false, nil, error.errorDescription ?? "error")
+    func getTokenByLogin( userName: String,passWord: String,token: String,completionHandler: @escaping (_ result: Result<Session?, ResponseError>)->()){
+        let parameters: [String: String] = [
+            "username": userName,
+            "password": passWord,
+            "request_token": token
+        ]
+        APIManager.shared.call(type: MovieAPI.getTokenByLogin, params: parameters){(result: Result<Session?, ResponseError>) in
+            switch result {
+            case .success(let session):
+                completionHandler(.success(session))
+            case .failure(let error):
+                completionHandler(.failure(error))
             }
         }
     }
     
-    func requestCreateSession(url: String, parameters: [String: String], headers: HTTPHeaders?, completion: @escaping (_ isSuccess: Bool, _ data: Session?, _ error: String?)->Void ) {
-        AF.request(url, method: .post, parameters: parameters, headers: headers).validate().response{ response in
-            switch response.result {
-            case .success:
-                do {
-                    let session = try JSONDecoder().decode(Session.self, from: response.data!)
-                    completion(true, session, nil)
-                } catch let error {
-                    print("===>> ERROR DECODE \(error)")
-                }
-            case let .failure(error):
-                completion(false, nil, error.errorDescription ?? "error")
+    func requestCreateSession( token: String,completionHandler: @escaping (_ result: Result<Session?, ResponseError>)->()){
+        let parameters: [String: String] = [
+            "request_token": token
+        ]
+        APIManager.shared.call(type: MovieAPI.requestCreateSession, params: parameters){(result: Result<Session?, ResponseError>) in
+            switch result {
+            case .success(let session):
+                completionHandler(.success(session))
+            case .failure(let error):
+                completionHandler(.failure(error))
             }
         }
     }
     
-    func requestUserDetail(url: String, parameters: [String: String], headers: HTTPHeaders?, completion: @escaping (_ isSuccess: Bool, _ data: User?, _ error: String?)->Void ) {
-        AF.request(ServerPath.accountDetail + ServerPath.apiKey, method: .get, parameters: parameters, headers: headers).validate().response{ response in
-            switch response.result {
-            case .success:
-                do {
-                    let user = try? JSONDecoder().decode(User.self, from: response.data!)
-                    completion(true, user, nil)
-                } catch let error {
-                    print("===>> ERROR DECODE \(error)")
-                }
-            case let .failure(error):
-                completion(false, nil, error.errorDescription ?? "error")
+    func getUserDetail( sessionID: String, completionHandler: @escaping (_ result: Result<User?, ResponseError>)->()){
+        let parameters: [String: String] = ["session_id": sessionID]
+        APIManager.shared.call(type: MovieAPI.getUserDetail, params: parameters){(result: Result<User?, ResponseError>) in
+            switch result {
+            case .success(let user):
+                completionHandler(.success(user))
+            case .failure(let error):
+                completionHandler(.failure(error))
             }
         }
     }
     
-    func deleteSession(url: String, parameters: [String: String], headers: HTTPHeaders?, completion: @escaping (_ isSuccess: Bool, _ data: Session?, _ error: String?)->Void ) {
-        AF.request(ServerPath.deleteSession + ServerPath.apiKey, method: .delete, parameters: parameters, headers: headers).validate().response{ response in
-            switch response.result {
-            case .success:
-                do {
-                    let session = try JSONDecoder().decode(Session.self, from: response.data!)
-                    completion(true, session, nil)
-                } catch let error {
-                    print("===>> ERROR DECODE \(error)")
-                }
-            case let .failure(error):
-                completion(false, nil, error.errorDescription ?? "error")
+    func deleteSession( sessionID: String,completionHandler: @escaping (_ result: Result<Session?, ResponseError>)->()){
+        let parameters: [String: String] = ["session_id": sessionID]
+        APIManager.shared.call(type: MovieAPI.deleteSession, params: parameters){(result: Result<Session?, ResponseError>) in
+            switch result {
+            case .success(let session):
+                completionHandler(.success(session))
+            case .failure(let error):
+                completionHandler(.failure(error))
             }
         }
     }
     
+    func requestListMovie( completionHandler: @escaping (_ result: Result<DataMovie?, ResponseError>)->()){
+        APIManager.shared.call(type: MovieAPI.requestListMovie){(result: Result<DataMovie?, ResponseError>) in
+            switch result {
+            case .success(let dataMovie):
+                completionHandler(.success(dataMovie))
+            case .failure(let error):
+                completionHandler(.failure(error))
+            }
+        }
+    }
+    
+    func requestListMovieWithPage( page: Int, completionHandler: @escaping (_ result: Result<DataMovie?, ResponseError>)->()){
+        APIManager.shared.call(type: MovieAPI.requestListMovieWithPage(page: page)){(result: Result<DataMovie?, ResponseError>) in
+            switch result {
+            case .success(let dataMovie):
+                completionHandler(.success(dataMovie))
+            case .failure(let error):
+                completionHandler(.failure(error))
+            }
+        }
+    }
+    
+    func getMovieDetail( id: Int, completionHandler: @escaping (_ result: Result<Movie?, ResponseError>)->()){
+        APIManager.shared.call(type: MovieAPI.getMovieDetail(id: id)){(result: Result<Movie?, ResponseError>) in
+            switch result {
+            case .success(let movie):
+                completionHandler(.success(movie))
+            case .failure(let error):
+                completionHandler(.failure(error))
+            }
+        }
+    }
 }

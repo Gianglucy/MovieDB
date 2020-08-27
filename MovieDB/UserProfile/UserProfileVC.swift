@@ -66,44 +66,48 @@ class UserProfileVC: UIViewController {
     }
     
     func requestUser(sessionID: String) {
-        let parameters: [String: String] = ["session_id": sessionID]
-        let headers: HTTPHeaders = [.authorization(bearerToken: ServerPath.accessToken)]
-        AuthService.instance.requestUserDetail(url: ServerPath.accountDetail + ServerPath.apiKey, parameters: parameters, headers: headers){ isSuccess, data, error in
-            if isSuccess {
+        AuthService.shared.getUserDetail(sessionID: sessionID){ (result) in
+            switch result {
+            case .success(let data):
                 self.dataUser = data
+                self.defaults.set(data?.id, forKey: defaultsKey.accountID)
                 DispatchQueue.main.async {
                     self.languageLabel.text = self.dataUser?.language
                     self.adultLabel.text = self.dataUser?.includeAdult?.description
                     self.nameLabel.text = self.dataUser?.name
                     self.userNameLabel.text = self.dataUser?.username
                 }
-            } else {
-                Alert.instance.oneOption(this: self, title: "ERROR", content: error!, titleButton: "OK") {() in }
+            case .failure(let error):
+                guard let status = error.statusCode else { return }
+                guard let message = error.statusMessage else { return }
+                Alert.instance.oneOption(this: self, title: "ERROR\(status)", content: message , titleButton: "OK") {() in }
             }
         }
     }
     
     @IBAction func logout(_ sender: UIButton) {
         Alert.instance.twoOption(this: self, title: "Notification", content: "Do you want to logout ?", titleButtonFirst: "Yes", titleButtonSecond: "No",
-        first: {() -> () in
-            if let sessionID = self.defaults.string(forKey: defaultsKey.sessionID) {
-                let parameters: [String: String] = ["session_id": sessionID]
-                let headers: HTTPHeaders = [.authorization(bearerToken: ServerPath.accessToken)]
-                AuthService.instance.deleteSession(url: ServerPath.deleteSession + ServerPath.apiKey, parameters: parameters, headers: headers){ isSuccess, data, error in
-                    if isSuccess {
-                        let loginVC = LoginVC(nibName: "LoginVC", bundle: nil)
-                        let keywindow = UIApplication.shared.windows.first!
-                        keywindow.rootViewController = loginVC
-                        self.defaults.set(false, forKey: defaultsKey.loginStatus)
-                        self.dismiss(animated: true, completion: nil)
-                    } else {
-                        Alert.instance.oneOption(this: self, title: "ERROR", content: error!, titleButton: "OK") {() in }
-                    }
-                }
-            }
+                                 first: {() -> () in
+                                    if let sessionID = self.defaults.string(forKey: defaultsKey.sessionID) {
+                                        
+                                        AuthService.shared.deleteSession(sessionID: sessionID){ (result) in
+                                            switch result {
+                                            case .success:
+                                                let loginVC = LoginVC(nibName: "LoginVC", bundle: nil)
+                                                let keywindow = UIApplication.shared.windows.first!
+                                                keywindow.rootViewController = loginVC
+                                                self.defaults.set(false, forKey: defaultsKey.loginStatus)
+                                                self.dismiss(animated: true, completion: nil)
+                                            case .failure(let error):
+                                                guard let status = error.statusCode else { return }
+                                                guard let message = error.statusMessage else { return }
+                                                Alert.instance.oneOption(this: self, title: "ERROR\(status)", content: message , titleButton: "OK") {() in }
+                                            }
+                                        }
+                                    }
         },
-        second: {() -> () in
-            
+                                 second: {() -> () in
+                                    
         })
     }
 }

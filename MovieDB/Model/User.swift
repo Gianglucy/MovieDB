@@ -20,8 +20,8 @@ struct User: Codable {
     enum CodingKeys: String, CodingKey {
         case avatar
         case id
-        case country = "iso_639_1"
-        case language = "iso_3166_1"
+        case language = "iso_639_1"
+        case country = "iso_3166_1"
         case name
         case includeAdult = "include_adult"
         case username

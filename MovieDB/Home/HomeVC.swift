@@ -11,56 +11,171 @@ import Alamofire
 
 class HomeVC: UIViewController {
     
+    @IBOutlet weak var movieCollectionView: UICollectionView!
+    var refreshControl = UIRefreshControl()
     let defaults = UserDefaults.standard
+    var deviceWidth:CGFloat!
+    var deviceHeight:CGFloat!
+    let spacing:CGFloat = 10
+    let col = 2
+    var movieData: [Movie]?
+    var page: Int = 1
+    var isLoadMore = true
     
     override func viewDidLoad() {
         super.viewDidLoad()
         requestToken()
+        getListMovie(){()in}
+        setupUI()
+    }
+    
+    func setupUI() {
+        movieCollectionView.delegate = self
+        movieCollectionView.dataSource = self
+        
+        deviceWidth = view.bounds.width
+        deviceHeight = view.bounds.height
+        
+        movieCollectionView.register(UINib(nibName: "MovieCell", bundle: nil), forCellWithReuseIdentifier: "MovieCell")
+        refreshControl.attributedTitle = NSAttributedString(string: "loading")
+        refreshControl.addTarget(self, action: #selector(self.refresh), for: .valueChanged)
+        movieCollectionView.addSubview(refreshControl)
+    }
+    
+    @objc func refresh() {
+        self.movieData = nil
+        self.page = 1
+        getListMovie(){() in
+            self.refreshControl.endRefreshing()
+        }
+    }
+    
+    func getListMovie( completion:@escaping () -> Void ) {
+        AuthService.shared.requestListMovie(){ (result) in
+            switch result {
+            case .success(let data):
+                self.movieData = data?.results
+                DispatchQueue.main.async {
+                    self.movieCollectionView.reloadData()
+                    completion()
+                }
+            case .failure(let error):
+                guard let status = error.statusCode else { return }
+                guard let message = error.statusMessage else { return }
+                Alert.instance.oneOption(this: self, title: "ERROR\(status)", content: message , titleButton: "OK") {() in }
+            }
+        }
     }
     
     func requestToken() {
-        AuthService.instance.requestToken(url: ServerPath.requestToken + ServerPath.apiKey){ isSuccess, data, error in
-            if isSuccess {
-                guard let requestTokenString = data?.requestToken else { return }
+        AuthService.shared.getToken(){ (result) in
+            switch result {
+            case .success(let success):
+                guard let requestTokenString = success?.requestToken else { return }
                 self.defaults.set(requestTokenString, forKey: defaultsKey.token)
                 self.createRequestTokenString(token: requestTokenString)
-            } else {
-                Alert.instance.oneOption(this: self, title: "ERROR", content: error!, titleButton: "OK") {() in }
+            case .failure(let error):
+                guard let status = error.statusCode else { return }
+                guard let message = error.statusMessage else { return }
+                Alert.instance.oneOption(this: self, title: "ERROR\(status)", content: message , titleButton: "OK") {() in }
             }
         }
     }
     
     func createRequestTokenString(token: String) {
         guard let userName = self.defaults.string(forKey: defaultsKey.iD) else { return }
-        guard let password = self.defaults.string(forKey: defaultsKey.password) else { return }
-        let parameters: [String: String] = [
-            "username": userName,
-            "password": password,
-            "request_token": token
-        ]
-        let headers: HTTPHeaders = [.authorization(bearerToken: ServerPath.accessToken)]
-        AuthService.instance.requestTokenByLogin(url: ServerPath.apiLogin + ServerPath.apiKey, parameters: parameters, headers: headers){isSuccess, data, error in
-            if isSuccess {
+        guard let passWord = self.defaults.string(forKey: defaultsKey.password) else { return }
+        AuthService.shared.getTokenByLogin(userName: userName, passWord: passWord, token: token){ (result) in
+            switch result {
+            case .success(let data):
                 guard let tokenLoginRequest = data?.requestToken else { return }
                 self.defaults.set(tokenLoginRequest, forKey: defaultsKey.token)
                 self.createSessionID(token: tokenLoginRequest)
-            } else {
-                Alert.instance.oneOption(this: self, title: "ERROR", content: error!, titleButton: "OK") {() in }
+            case .failure(let error):
+                guard let status = error.statusCode else { return }
+                guard let message = error.statusMessage else { return }
+                Alert.instance.oneOption(this: self, title: "ERROR\(status)", content: message , titleButton: "OK") {() in }
             }
         }
     }
     
     func createSessionID(token: String) {
-        let parameters: [String: String] = ["request_token": token]
-        let headers: HTTPHeaders = [.authorization(bearerToken: ServerPath.accessToken)]
-        AuthService.instance.requestCreateSession(url: ServerPath.apiSessionID + ServerPath.apiKey, parameters: parameters, headers: headers){isSuccess, data, error in
-            if isSuccess {
+        AuthService.shared.requestCreateSession(token: token){ (result) in
+            switch result {
+            case .success(let data):
                 guard let sessionID = data?.sessionId else { return }
                 self.defaults.set(sessionID, forKey: defaultsKey.sessionID)
-//                print("000000000000====>> \(sessionID)")
-            } else {
-                Alert.instance.oneOption(this: self, title: "ERROR", content: error!, titleButton: "OK") {() in }
+            case .failure(let error):
+                guard let status = error.statusCode else { return }
+                guard let message = error.statusMessage else { return }
+                Alert.instance.oneOption(this: self, title: "ERROR\(status)", content: message , titleButton: "OK") {() in }
             }
         }
+    }
+    
+    func getListMovieWithPage(page: Int) {
+        AuthService.shared.requestListMovieWithPage(page: page){ (result) in
+            switch result {
+            case .success(let data):
+                self.isLoadMore = true
+                self.movieData! += (data?.results)!
+                DispatchQueue.main.async {
+                    self.movieCollectionView.reloadData()
+                }
+            case .failure(let error):
+                guard let status = error.statusCode else { return }
+                guard let message = error.statusMessage else { return }
+                Alert.instance.oneOption(this: self, title: "ERROR\(status)", content: message , titleButton: "OK") {() in }
+            }
+        }
+    }
+}
+
+extension HomeVC: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return movieData?.count ?? 0
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = movieCollectionView.dequeueReusableCell(withReuseIdentifier: "MovieCell", for: indexPath) as! MovieCell
+        guard let data = self.movieData else { return cell }
+        cell.configCell(movie: data[indexPath.row])
+        cell.delegate = self
+        return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+        return UIEdgeInsets(top: spacing, left: spacing, bottom: spacing, right: spacing)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
+        return 0
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+        return spacing
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        let width = (UIScreen.main.bounds.size.width - (CGFloat(col + 1) * CGFloat(spacing))) / 2
+        return CGSize(width: width, height: deviceHeight/2.5)
+    }
+    
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        if scrollView.contentSize.height - scrollView.contentOffset.y - scrollView.frame.height < 0 && self.movieData != nil {
+            if isLoadMore {
+                isLoadMore = false
+                self.page += 1
+                self.getListMovieWithPage(page: self.page)
+            }
+        }
+    }
+}
+
+extension HomeVC: MovieCellProtocol {
+    func passIdMovie(id: Int) {
+        let movieDetailVC = MovieDetailVC(nibName: "MovieDetailVC", bundle: nil)
+        self.navigationController?.pushViewController(movieDetailVC, animated: false)
+        movieDetailVC.MovieId = id
     }
 }

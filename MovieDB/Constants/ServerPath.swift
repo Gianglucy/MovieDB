@@ -17,6 +17,7 @@ struct ServerPath {
     static let requestToken = "https://api.themoviedb.org/3/authentication/token/new?api_key="
     static let accountDetail = "https://api.themoviedb.org/3/account?api_key="
     static let deleteSession = "https://api.themoviedb.org/3/authentication/session?api_key="
+    static let requestMovie = "https://api.themoviedb.org/3/movie/top_rated?api_key=\(ServerPath.apiKey)&language=en-US&page="
     
     static let accessToken = "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJiYmM0NzNjYzUzYTQyY2JjMzMzZmVhNDIzNTY2MjU1NCIsInN1YiI6IjVmMWUyOTBhMGJiMDc2MDAzNWY3ZjA3ZiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.dEbn-emvUInRLvVwEzCsU0kj-tRz2PrOfaE2u3VZhIo"
 }

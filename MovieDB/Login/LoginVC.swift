@@ -25,12 +25,15 @@ class LoginVC: UIViewController {
     }
     
     func requestToken() {
-        AuthService.instance.requestToken(url: ServerPath.requestToken + ServerPath.apiKey){isSuccess, data, error in
-            if isSuccess {
-                guard let requestTokenString = data?.requestToken else { return }
+        AuthService.shared.getToken(){ (result) in
+            switch result {
+            case .success(let success):
+                guard let requestTokenString = success?.requestToken else { return }
                 self.defaults.set(requestTokenString, forKey: defaultsKey.token)
-            } else {
-                Alert.instance.oneOption(this: self, title: "ERROR", content: error!, titleButton: "OK") {() in }
+            case .failure(let error):
+                guard let status = error.statusCode else { return }
+                guard let message = error.statusMessage else { return }
+                Alert.instance.oneOption(this: self, title: "ERROR\(status)", content: message , titleButton: "OK") {() in }
             }
         }
     }
@@ -67,14 +70,12 @@ class LoginVC: UIViewController {
             Alert.instance.oneOption(this: self, title: "Alert", content: "Please fill full!", titleButton: "OK") {() in }
         } else {
             if let token = self.defaults.string(forKey: defaultsKey.token) {
-                let parameters: [String: String] = [
-                    "username": userNameTextField.text!,
-                    "password": passTextField.text!,
-                    "request_token": token
-                ]
-                let headers: HTTPHeaders = [.authorization(bearerToken: ServerPath.accessToken)]
-                AuthService.instance.requestTokenByLogin(url: ServerPath.apiLogin + ServerPath.apiKey, parameters: parameters, headers: headers){isSuccess, data, error in
-                    if isSuccess {
+                guard let userName = userNameTextField.text else { return }
+                guard let passWord = passTextField.text else { return }
+                //                let headers: HTTPHeaders = [.authorization(bearerToken: ServerPath.accessToken)]
+                AuthService.shared.getTokenByLogin(userName: userName, passWord: passWord, token: token){ (result) in
+                    switch result {
+                    case .success:
                         self.defaults.set(self.userNameTextField.text, forKey: defaultsKey.iD)
                         self.defaults.set(self.passTextField.text, forKey: defaultsKey.password)
                         self.defaults.set(true, forKey: defaultsKey.loginStatus)
@@ -82,8 +83,10 @@ class LoginVC: UIViewController {
                         let tabBarVC = TabBarVC(nibName: "TabBarVC", bundle: nil)
                         let keywindow = UIApplication.shared.windows.first!
                         keywindow.rootViewController = tabBarVC
-                    } else {
-                        Alert.instance.oneOption(this: self, title: "ERROR", content: error!, titleButton: "OK") {() in }
+                    case .failure(let error):
+                        guard let status = error.statusCode else { return }
+                        guard let message = error.statusMessage else { return }
+                        Alert.instance.oneOption(this: self, title: "ERROR\(status)", content: message , titleButton: "OK") {() in }
                     }
                 }
             } else {
