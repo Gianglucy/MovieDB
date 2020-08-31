@@ -33,8 +33,15 @@ class UserProfileVC: UIViewController {
         setupUI()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.tabBarController?.tabBar.isHidden = false
+    }
+    
     func setupUI() {
         self.title = "User Profile"
+        let rightBarButton = UIBarButtonItem(title: "List", style: .done, target: self, action: #selector(list))
+        self.navigationItem.rightBarButtonItem = rightBarButton
         
         self.view.backgroundColor = Colors.background
         self.userImageView.contentMode = .scaleAspectFill
@@ -63,6 +70,13 @@ class UserProfileVC: UIViewController {
         
         self.logoutButton.backgroundColor = Colors.organgeCustome
         self.logoutButton.layer.cornerRadius = Constants.cornerRadius
+    }
+    
+    @objc func list() {
+        
+        let listVC = ListVC(nibName: "ListVC", bundle: nil)
+        navigationController?.pushViewController(listVC, animated: true)
+        
     }
     
     func requestUser(sessionID: String) {

@@ -110,4 +110,43 @@ class AuthService {
             }
         }
     }
+    
+    func getCreatedList( page: Int, accountID: String, sessionID: String, completionHandler: @escaping (_ result: Result<DataList?, ResponseError>)->()){
+        let parameters: [String: String] = ["session_id": sessionID]
+        APIManager.shared.call(type: MovieAPI.getCreatedList(page: page, accountID: accountID), params: parameters){(result: Result<DataList?, ResponseError>) in
+            switch result {
+            case .success(let dataList):
+                completionHandler(.success(dataList))
+            case .failure(let error):
+                completionHandler(.failure(error))
+            }
+        }
+    }
+    
+    func deleteList( listID: Int, sessionID: String, completionHandler: @escaping (_ result: Result<ResponseError?, ResponseError>)->()){
+        APIManager.shared.call(type: MovieAPI.deleteList(sessionID: sessionID, listID: listID)){(result: Result<ResponseError?, ResponseError>) in
+            switch result {
+            case .success(let data):
+                completionHandler(.success(data))
+            case .failure(let error):
+                completionHandler(.failure(error))
+            }
+        }
+    }
+    
+    func createList( name: String, description: String? = "", sessionID: String, completionHandler: @escaping (_ result: Result<ResponseList?, ResponseError>)->()){
+        let parameters: [String: String] = [
+            "name": name,
+            "description": description!,
+            "language": "en"
+        ]
+        APIManager.shared.call(type: MovieAPI.createList(sessionID: sessionID), params: parameters){(result: Result<ResponseList?, ResponseError>) in
+            switch result {
+            case .success(let response):
+                completionHandler(.success(response))
+            case .failure(let error):
+                completionHandler(.failure(error))
+            }
+        }
+    }
 }

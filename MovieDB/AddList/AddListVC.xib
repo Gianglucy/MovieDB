@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="16097.2" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina5_5" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="AddListVC" customModule="MovieDB" customModuleProvider="target">
+            <connections>
+                <outlet property="addListModal" destination="zYR-mX-cE5" id="ir6-da-oFo"/>
+                <outlet property="background" destination="9y8-xr-SoN" id="vpA-pm-Y2d"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hYR-pn-NNb">
+                    <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+                    <subviews>
+                        <view alpha="0.40000000000000002" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9y8-xr-SoN">
+                            <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+                            <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        </view>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zYR-mX-cE5" customClass="AddListModalView" customModule="MovieDB" customModuleProvider="target">
+                            <rect key="frame" x="41.333333333333343" y="184" width="331.33333333333326" height="368"/>
+                            <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        </view>
+                    </subviews>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstItem="zYR-mX-cE5" firstAttribute="centerY" secondItem="hYR-pn-NNb" secondAttribute="centerY" id="1Qt-6d-sbx"/>
+                        <constraint firstItem="9y8-xr-SoN" firstAttribute="leading" secondItem="hYR-pn-NNb" secondAttribute="leading" id="8k4-NG-oyV"/>
+                        <constraint firstItem="zYR-mX-cE5" firstAttribute="height" secondItem="hYR-pn-NNb" secondAttribute="height" multiplier="0.5" id="IsK-9m-1cV"/>
+                        <constraint firstAttribute="bottom" secondItem="9y8-xr-SoN" secondAttribute="bottom" id="KVu-mr-z9p"/>
+                        <constraint firstAttribute="trailing" secondItem="9y8-xr-SoN" secondAttribute="trailing" id="YRO-uW-Bjw"/>
+                        <constraint firstItem="zYR-mX-cE5" firstAttribute="width" secondItem="hYR-pn-NNb" secondAttribute="width" multiplier="0.8" id="ePO-dN-09Q"/>
+                        <constraint firstItem="9y8-xr-SoN" firstAttribute="top" secondItem="hYR-pn-NNb" secondAttribute="top" id="kTn-aZ-wHj"/>
+                        <constraint firstItem="zYR-mX-cE5" firstAttribute="centerX" secondItem="hYR-pn-NNb" secondAttribute="centerX" id="qw2-T7-r7o"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <constraints>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="hYR-pn-NNb" secondAttribute="bottom" id="U3u-2Z-B6z"/>
+                <constraint firstItem="hYR-pn-NNb" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="fwS-HY-i0P"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="hYR-pn-NNb" secondAttribute="trailing" id="pUC-eK-Id7"/>
+                <constraint firstItem="hYR-pn-NNb" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" id="xdb-fq-gxO"/>
+            </constraints>
+            <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
+            <point key="canvasLocation" x="139" y="93"/>
+        </view>
+    </objects>
+</document>

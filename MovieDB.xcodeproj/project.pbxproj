@@ -25,6 +25,17 @@
 		1877381324EC158B005F1779 /* UserProfileVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1877381124EC158B005F1779 /* UserProfileVC.swift */; };
 		1877381424EC158B005F1779 /* UserProfileVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1877381224EC158B005F1779 /* UserProfileVC.xib */; };
 		1877381624ECD249005F1779 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1877381524ECD249005F1779 /* User.swift */; };
+		189AB81524F8ACB70039B5B5 /* List.swift in Sources */ = {isa = PBXBuildFile; fileRef = 189AB81424F8ACB70039B5B5 /* List.swift */; };
+		189AB81924F8E1F80039B5B5 /* AddListVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 189AB81724F8E1F80039B5B5 /* AddListVC.swift */; };
+		189AB81A24F8E1F80039B5B5 /* AddListVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 189AB81824F8E1F80039B5B5 /* AddListVC.xib */; };
+		189AB82124F8EFAC0039B5B5 /* AddListModalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 189AB82024F8EFAC0039B5B5 /* AddListModalView.swift */; };
+		189AB82324F8EFC10039B5B5 /* AddListModalView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 189AB82224F8EFC10039B5B5 /* AddListModalView.xib */; };
+		189AB82724FA704F0039B5B5 /* ListVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 189AB82524FA704F0039B5B5 /* ListVC.swift */; };
+		189AB82824FA704F0039B5B5 /* ListVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 189AB82624FA704F0039B5B5 /* ListVC.xib */; };
+		189AB82C24FA756E0039B5B5 /* ListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 189AB82A24FA756E0039B5B5 /* ListCell.swift */; };
+		189AB82D24FA756E0039B5B5 /* ListCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 189AB82B24FA756E0039B5B5 /* ListCell.xib */; };
+		189AB83124FCD6F80039B5B5 /* DetailListVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 189AB82F24FCD6F80039B5B5 /* DetailListVC.swift */; };
+		189AB83224FCD6F80039B5B5 /* DetailListVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 189AB83024FCD6F80039B5B5 /* DetailListVC.xib */; };
 		18DB302224EE62FB00967FB8 /* APIConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18DB302124EE62FB00967FB8 /* APIConfiguration.swift */; };
 		18DB302424EE646000967FB8 /* APIRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18DB302324EE646000967FB8 /* APIRouter.swift */; };
 		18DB302624EE82E300967FB8 /* AuthService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18DB302524EE82E300967FB8 /* AuthService.swift */; };
@@ -60,6 +71,17 @@
 		1877381124EC158B005F1779 /* UserProfileVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileVC.swift; sourceTree = "<group>"; };
 		1877381224EC158B005F1779 /* UserProfileVC.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = UserProfileVC.xib; sourceTree = "<group>"; };
 		1877381524ECD249005F1779 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		189AB81424F8ACB70039B5B5 /* List.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = List.swift; sourceTree = "<group>"; };
+		189AB81724F8E1F80039B5B5 /* AddListVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddListVC.swift; sourceTree = "<group>"; };
+		189AB81824F8E1F80039B5B5 /* AddListVC.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AddListVC.xib; sourceTree = "<group>"; };
+		189AB82024F8EFAC0039B5B5 /* AddListModalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddListModalView.swift; sourceTree = "<group>"; };
+		189AB82224F8EFC10039B5B5 /* AddListModalView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AddListModalView.xib; sourceTree = "<group>"; };
+		189AB82524FA704F0039B5B5 /* ListVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListVC.swift; sourceTree = "<group>"; };
+		189AB82624FA704F0039B5B5 /* ListVC.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ListVC.xib; sourceTree = "<group>"; };
+		189AB82A24FA756E0039B5B5 /* ListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListCell.swift; sourceTree = "<group>"; };
+		189AB82B24FA756E0039B5B5 /* ListCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ListCell.xib; sourceTree = "<group>"; };
+		189AB82F24FCD6F80039B5B5 /* DetailListVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailListVC.swift; sourceTree = "<group>"; };
+		189AB83024FCD6F80039B5B5 /* DetailListVC.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DetailListVC.xib; sourceTree = "<group>"; };
 		18DB302124EE62FB00967FB8 /* APIConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIConfiguration.swift; sourceTree = "<group>"; };
 		18DB302324EE646000967FB8 /* APIRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIRouter.swift; sourceTree = "<group>"; };
 		18DB302524EE82E300967FB8 /* AuthService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthService.swift; sourceTree = "<group>"; };
@@ -109,6 +131,9 @@
 		187737DC24EA408A005F1779 /* MovieDB */ = {
 			isa = PBXGroup;
 			children = (
+				189AB82E24FCD6C80039B5B5 /* DetailList */,
+				189AB82424FA70160039B5B5 /* List */,
+				189AB81624F8E0EE0039B5B5 /* AddList */,
 				18DB303124F4B6E300967FB8 /* Movie */,
 				18DB302724F1597F00967FB8 /* Alert */,
 				18DB300A24EE26E900967FB8 /* Networking */,
@@ -153,6 +178,7 @@
 				1877380424EB7C07005F1779 /* Token.swift */,
 				1877381524ECD249005F1779 /* User.swift */,
 				18DB302A24F39E4400967FB8 /* Movie.swift */,
+				189AB81424F8ACB70039B5B5 /* List.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -192,6 +218,53 @@
 				1877381224EC158B005F1779 /* UserProfileVC.xib */,
 			);
 			path = UserProfile;
+			sourceTree = "<group>";
+		};
+		189AB81624F8E0EE0039B5B5 /* AddList */ = {
+			isa = PBXGroup;
+			children = (
+				189AB81B24F8E9FF0039B5B5 /* AddListModal */,
+				189AB81724F8E1F80039B5B5 /* AddListVC.swift */,
+				189AB81824F8E1F80039B5B5 /* AddListVC.xib */,
+			);
+			path = AddList;
+			sourceTree = "<group>";
+		};
+		189AB81B24F8E9FF0039B5B5 /* AddListModal */ = {
+			isa = PBXGroup;
+			children = (
+				189AB82024F8EFAC0039B5B5 /* AddListModalView.swift */,
+				189AB82224F8EFC10039B5B5 /* AddListModalView.xib */,
+			);
+			path = AddListModal;
+			sourceTree = "<group>";
+		};
+		189AB82424FA70160039B5B5 /* List */ = {
+			isa = PBXGroup;
+			children = (
+				189AB82924FA75520039B5B5 /* Cell */,
+				189AB82524FA704F0039B5B5 /* ListVC.swift */,
+				189AB82624FA704F0039B5B5 /* ListVC.xib */,
+			);
+			path = List;
+			sourceTree = "<group>";
+		};
+		189AB82924FA75520039B5B5 /* Cell */ = {
+			isa = PBXGroup;
+			children = (
+				189AB82A24FA756E0039B5B5 /* ListCell.swift */,
+				189AB82B24FA756E0039B5B5 /* ListCell.xib */,
+			);
+			path = Cell;
+			sourceTree = "<group>";
+		};
+		189AB82E24FCD6C80039B5B5 /* DetailList */ = {
+			isa = PBXGroup;
+			children = (
+				189AB82F24FCD6F80039B5B5 /* DetailListVC.swift */,
+				189AB83024FCD6F80039B5B5 /* DetailListVC.xib */,
+			);
+			path = DetailList;
 			sourceTree = "<group>";
 		};
 		18DB300A24EE26E900967FB8 /* Networking */ = {
@@ -309,11 +382,16 @@
 			buildActionMask = 2147483647;
 			files = (
 				1877380F24EB88AF005F1779 /* TabBarVC.xib in Resources */,
+				189AB82D24FA756E0039B5B5 /* ListCell.xib in Resources */,
 				18DB303024F3A15700967FB8 /* MovieCell.xib in Resources */,
 				187737F424EA4149005F1779 /* LoginVC.xib in Resources */,
+				189AB81A24F8E1F80039B5B5 /* AddListVC.xib in Resources */,
+				189AB82324F8EFC10039B5B5 /* AddListModalView.xib in Resources */,
 				1877380A24EB8832005F1779 /* HomeVC.xib in Resources */,
 				187737EA24EA408C005F1779 /* LaunchScreen.storyboard in Resources */,
+				189AB83224FCD6F80039B5B5 /* DetailListVC.xib in Resources */,
 				187737E724EA408C005F1779 /* Assets.xcassets in Resources */,
+				189AB82824FA704F0039B5B5 /* ListVC.xib in Resources */,
 				18DB303524F4C8EF00967FB8 /* MovieDetailVC.xib in Resources */,
 				1877381424EC158B005F1779 /* UserProfileVC.xib in Resources */,
 			);
@@ -373,21 +451,27 @@
 				187737FA24EA85B2005F1779 /* Constants.swift in Sources */,
 				18DB302F24F3A15700967FB8 /* MovieCell.swift in Sources */,
 				187737DE24EA408A005F1779 /* AppDelegate.swift in Sources */,
+				189AB82C24FA756E0039B5B5 /* ListCell.swift in Sources */,
 				1877381324EC158B005F1779 /* UserProfileVC.swift in Sources */,
 				18DB303A24F757D500967FB8 /* APIManager.swift in Sources */,
 				187737E024EA408A005F1779 /* SceneDelegate.swift in Sources */,
+				189AB83124FCD6F80039B5B5 /* DetailListVC.swift in Sources */,
 				18DB303724F6690300967FB8 /* ResponseError.swift in Sources */,
 				1877380924EB8832005F1779 /* HomeVC.swift in Sources */,
 				1877380024EB7267005F1779 /* DefaultsKey.swift in Sources */,
+				189AB82724FA704F0039B5B5 /* ListVC.swift in Sources */,
 				18DB302424EE646000967FB8 /* APIRouter.swift in Sources */,
 				1877380224EB72D7005F1779 /* ServerPath.swift in Sources */,
 				1877381624ECD249005F1779 /* User.swift in Sources */,
 				18DB302224EE62FB00967FB8 /* APIConfiguration.swift in Sources */,
 				187737F724EA83E1005F1779 /* ExtensionUIView.swift in Sources */,
 				18DB302624EE82E300967FB8 /* AuthService.swift in Sources */,
+				189AB81524F8ACB70039B5B5 /* List.swift in Sources */,
 				187737F324EA4149005F1779 /* LoginVC.swift in Sources */,
 				18DB302924F1599B00967FB8 /* Alert.swift in Sources */,
+				189AB81924F8E1F80039B5B5 /* AddListVC.swift in Sources */,
 				1877380524EB7C07005F1779 /* Token.swift in Sources */,
+				189AB82124F8EFAC0039B5B5 /* AddListModalView.swift in Sources */,
 				18DB302B24F39E4400967FB8 /* Movie.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

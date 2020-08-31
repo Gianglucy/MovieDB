@@ -104,6 +104,7 @@ class HomeVC: UIViewController {
             switch result {
             case .success(let data):
                 guard let sessionID = data?.sessionId else { return }
+                print("=))))))) \(sessionID)")
                 self.defaults.set(sessionID, forKey: defaultsKey.sessionID)
             case .failure(let error):
                 guard let status = error.statusCode else { return }
