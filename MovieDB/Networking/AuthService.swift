@@ -149,4 +149,43 @@ class AuthService {
             }
         }
     }
+    
+    func getDetailList( listID: Int, completionHandler: @escaping (_ result: Result<ListDetail?, ResponseError>)->()){
+        APIManager.shared.call(type: MovieAPI.getDetailList(listID: listID)){(result: Result<ListDetail?, ResponseError>) in
+            switch result {
+            case .success(let list):
+                completionHandler(.success(list))
+            case .failure(let error):
+                completionHandler(.failure(error))
+            }
+        }
+    }
+    
+    func addMovie( listID: Int, sessionID: String, movieID: Int, completionHandler: @escaping (_ result: Result<ResponseError?, ResponseError>)->()){
+        let parameters: [String: Int] = [
+            "media_id": movieID
+        ]
+        APIManager.shared.call(type: MovieAPI.addMovie(listID: listID, sessionID: sessionID), params: parameters){(result: Result<ResponseError?, ResponseError>) in
+            switch result {
+            case .success(let data):
+                completionHandler(.success(data))
+            case .failure(let error):
+                completionHandler(.failure(error))
+            }
+        }
+    }
+    
+    func deleteMovie( listID: Int, sessionID: String, movieID: Int, completionHandler: @escaping (_ result: Result<ResponseError?, ResponseError>)->()){
+        let parameters: [String: Int] = [
+            "media_id": movieID
+        ]
+        APIManager.shared.call(type: MovieAPI.deleteMovie(listID: listID, sessionID: sessionID), params: parameters){(result: Result<ResponseError?, ResponseError>) in
+            switch result {
+            case .success(let data):
+                completionHandler(.success(data))
+            case .failure(let error):
+                completionHandler(.failure(error))
+            }
+        }
+    }
 }

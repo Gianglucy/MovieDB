@@ -36,6 +36,7 @@
 		189AB82D24FA756E0039B5B5 /* ListCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 189AB82B24FA756E0039B5B5 /* ListCell.xib */; };
 		189AB83124FCD6F80039B5B5 /* DetailListVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 189AB82F24FCD6F80039B5B5 /* DetailListVC.swift */; };
 		189AB83224FCD6F80039B5B5 /* DetailListVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 189AB83024FCD6F80039B5B5 /* DetailListVC.xib */; };
+		189AB83424FCF4EA0039B5B5 /* ListDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 189AB83324FCF4EA0039B5B5 /* ListDetail.swift */; };
 		18DB302224EE62FB00967FB8 /* APIConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18DB302124EE62FB00967FB8 /* APIConfiguration.swift */; };
 		18DB302424EE646000967FB8 /* APIRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18DB302324EE646000967FB8 /* APIRouter.swift */; };
 		18DB302624EE82E300967FB8 /* AuthService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18DB302524EE82E300967FB8 /* AuthService.swift */; };
@@ -82,6 +83,7 @@
 		189AB82B24FA756E0039B5B5 /* ListCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ListCell.xib; sourceTree = "<group>"; };
 		189AB82F24FCD6F80039B5B5 /* DetailListVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailListVC.swift; sourceTree = "<group>"; };
 		189AB83024FCD6F80039B5B5 /* DetailListVC.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DetailListVC.xib; sourceTree = "<group>"; };
+		189AB83324FCF4EA0039B5B5 /* ListDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListDetail.swift; sourceTree = "<group>"; };
 		18DB302124EE62FB00967FB8 /* APIConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIConfiguration.swift; sourceTree = "<group>"; };
 		18DB302324EE646000967FB8 /* APIRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIRouter.swift; sourceTree = "<group>"; };
 		18DB302524EE82E300967FB8 /* AuthService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthService.swift; sourceTree = "<group>"; };
@@ -179,6 +181,7 @@
 				1877381524ECD249005F1779 /* User.swift */,
 				18DB302A24F39E4400967FB8 /* Movie.swift */,
 				189AB81424F8ACB70039B5B5 /* List.swift */,
+				189AB83324FCF4EA0039B5B5 /* ListDetail.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -460,6 +463,7 @@
 				1877380924EB8832005F1779 /* HomeVC.swift in Sources */,
 				1877380024EB7267005F1779 /* DefaultsKey.swift in Sources */,
 				189AB82724FA704F0039B5B5 /* ListVC.swift in Sources */,
+				189AB83424FCF4EA0039B5B5 /* ListDetail.swift in Sources */,
 				18DB302424EE646000967FB8 /* APIRouter.swift in Sources */,
 				1877380224EB72D7005F1779 /* ServerPath.swift in Sources */,
 				1877381624ECD249005F1779 /* User.swift in Sources */,

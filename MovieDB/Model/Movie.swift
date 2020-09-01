@@ -35,6 +35,7 @@ struct Movie: Codable {
     var spokenLanguages: [Languages]?
     var status: String?
     var tagline: String?
+    var mediaType: String?
     
     enum CodingKeys: String, CodingKey {
         case posterPath = "poster_path"
@@ -63,6 +64,7 @@ struct Movie: Codable {
         case spokenLanguages = "spoken_languages"
         case status
         case tagline
+        case mediaType = "media_type"
     }
 }
 
@@ -127,6 +129,7 @@ struct Collections: Codable {
 struct Dates: Codable {
     var maximum: String?
     var minimum: String?
+    
     enum CodingKeys: String, CodingKey {
         case maximum
         case minimum
@@ -139,6 +142,7 @@ struct DataMovie: Codable {
     var totalResults: Int?
     var totalPages: Int?
     var dates: Dates?
+    
     enum CodingKeys: String, CodingKey {
         case results
         case page

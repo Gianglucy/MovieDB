@@ -73,10 +73,8 @@ class UserProfileVC: UIViewController {
     }
     
     @objc func list() {
-        
         let listVC = ListVC(nibName: "ListVC", bundle: nil)
         navigationController?.pushViewController(listVC, animated: true)
-        
     }
     
     func requestUser(sessionID: String) {

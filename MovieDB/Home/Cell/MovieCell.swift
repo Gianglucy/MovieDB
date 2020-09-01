@@ -10,6 +10,8 @@ import UIKit
 
 protocol MovieCellProtocol {
     func passIdMovie(id: Int)
+    func callAddItem(movieID: Int)
+    func callDeleteItem(movieID: Int)
 }
 
 class MovieCell: UICollectionViewCell {
@@ -19,6 +21,8 @@ class MovieCell: UICollectionViewCell {
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var overviewLabel: UILabel!
     @IBOutlet weak var posterImageView: UIImageView!
+    @IBOutlet weak var addListButton: UIButton!
+    
     var movie: Movie?
     var delegate: MovieCellProtocol?
     
@@ -28,6 +32,7 @@ class MovieCell: UICollectionViewCell {
     }
     
     func setupUI() {
+        self.addListButton.tintColor = .cyan
         self.backgroundColor = Colors.background
         posterImageView.image = UIImage(named: "img_image")
         posterImageView.contentMode = .scaleAspectFill
@@ -58,6 +63,13 @@ class MovieCell: UICollectionViewCell {
     override func prepareForReuse() {
         super.prepareForReuse()
         self.posterImageView.image = nil
+    }
+    
+    @IBAction func addList(_ sender: UIButton) {
+        if let movie = self.movie {
+            delegate?.callAddItem(movieID: movie.id ?? 0)
+            delegate?.callDeleteItem(movieID: movie.id ?? 0)
+        }
     }
     
     func configCell(movie: Movie) {

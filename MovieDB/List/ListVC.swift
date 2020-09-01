@@ -8,11 +8,18 @@
 
 import UIKit
 
+protocol ListVCDelegate {
+    func passData(listID: Int, movieID: Int)
+}
+
 class ListVC: UIViewController {
     @IBOutlet weak var listTableView: UITableView!
     let defaults = UserDefaults.standard
     var textNilLabel = UILabel()
     var list: [List]?
+    var isAdd: Bool = false
+    var delegate: ListVCDelegate?
+    var movieID: Int?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -26,9 +33,10 @@ class ListVC: UIViewController {
         listTableView.delegate = self
         listTableView.dataSource = self
         
-        let rightBarButton = UIBarButtonItem(title: "Add List", style: .done, target: self, action: #selector(addList))
-        self.navigationItem.rightBarButtonItem = rightBarButton
-        
+        if !isAdd {
+            let rightBarButton = UIBarButtonItem(title: "Add List", style: .done, target: self, action: #selector(addList))
+            self.navigationItem.rightBarButtonItem = rightBarButton
+        }
         listTableView.register(UINib(nibName: "ListCell", bundle: nil), forCellReuseIdentifier: "ListCell")
     }
     
@@ -117,7 +125,15 @@ extension ListVC: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        print(indexPath.row)
+        if isAdd {
+            delegate?.passData(listID: list?[indexPath.row].id ?? 0, movieID: movieID ?? 0)
+        } else {
+            let detailListVC = DetailListVC(nibName: "DetailListVC", bundle: nil)
+            detailListVC.titleScreen = list?[indexPath.row].name
+            detailListVC.listID = list?[indexPath.row].id
+            detailListVC.delegate = self
+            navigationController?.pushViewController(detailListVC, animated: true)
+        }
     }
 }
 
@@ -131,14 +147,8 @@ extension ListVC: AddListVCDelegate {
                     switch result {
                     case .success(let data):
                         guard let message = data?.statusMessage else { return }
-                        self.list?.insert(List(description: description, favoriteCount: 0, id: data?.listId, itemCount: 0, language: "en", listType: "", name: name, posterPath: ""), at: 0)
+                        self.getList()
                         Alert.instance.oneOption(this: self, title: "SUCCESS", content: message , titleButton: "OK") {() in
-                            DispatchQueue.main.async {
-                                self.listTableView.reloadData()
-                            }
-                            if self.list?.count == 1 {
-                                self.getList()
-                            }
                         }
                     case .failure(let error):
                         guard let status = error.statusCode else { return }
@@ -150,5 +160,11 @@ extension ListVC: AddListVCDelegate {
             
             dismiss(animated: true)
         }
+    }
+}
+
+extension ListVC: DetailListVCDelegate {
+    func callBack() {
+        getList()
     }
 }

@@ -174,9 +174,43 @@ extension HomeVC: UICollectionViewDelegate, UICollectionViewDataSource, UICollec
 }
 
 extension HomeVC: MovieCellProtocol {
+    func callDeleteItem(movieID: Int) {}
+    
+    func callAddItem(movieID: Int) {
+        let listVC = ListVC(nibName: "ListVC", bundle: nil)
+        listVC.isAdd = true
+        listVC.delegate = self
+        listVC.movieID = movieID
+        let navController = UINavigationController(rootViewController: listVC)
+        self.present(navController, animated: true, completion: nil)
+    }
+    
     func passIdMovie(id: Int) {
         let movieDetailVC = MovieDetailVC(nibName: "MovieDetailVC", bundle: nil)
         self.navigationController?.pushViewController(movieDetailVC, animated: false)
         movieDetailVC.MovieId = id
+    }
+}
+
+extension HomeVC: ListVCDelegate {
+    func passData(listID: Int, movieID: Int) {
+        guard let sessionID = self.defaults.string(forKey: defaultsKey.sessionID) else { return }
+        self.dismiss(animated: true){()in
+            AuthService.shared.addMovie(listID: listID, sessionID: sessionID, movieID: movieID){ (result) in
+                switch result {
+                case .success(let data):
+                    guard let message = data!.statusMessage else { return }
+                    Alert.instance.oneOption(this: self, title: "SUCCESS", content: message , titleButton: "OK") {() in }
+                case .failure(let error):
+                    guard let status = error.statusCode else { return }
+                    guard let message = error.statusMessage else { return }
+                    if status == 8 {
+                        Alert.instance.oneOption(this: self, title: "NOTIFICATION", content: message , titleButton: "OK") {() in }
+                    } else {
+                        Alert.instance.oneOption(this: self, title: "ERROR\(status)", content: message , titleButton: "OK") {() in }
+                    }
+                }
+            }
+        }
     }
 }

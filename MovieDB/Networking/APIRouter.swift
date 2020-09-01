@@ -21,6 +21,9 @@ enum MovieAPI {
     case getCreatedList(page: Int, accountID: String)
     case createList(sessionID: String)
     case deleteList(sessionID: String, listID: Int)
+    case getDetailList(listID: Int)
+    case addMovie(listID: Int, sessionID: String)
+    case deleteMovie(listID: Int, sessionID: String)
 }
 
 extension MovieAPI: TargetType {
@@ -52,6 +55,12 @@ extension MovieAPI: TargetType {
             return "/list/\(listID)?api_key=\(ServerPath.apiKey)&session_id=\(sessionID)"
         case .createList(let sessionID):
             return "/list?api_key=\(ServerPath.apiKey)&session_id=\(sessionID)"
+        case .getDetailList(let listID):
+            return "/list/\(listID)?api_key=\(ServerPath.apiKey)&language=en-US"
+        case .addMovie(let listID, let sessionID):
+            return "/list/\(listID)/add_item?api_key=\(ServerPath.apiKey)&session_id=\(sessionID)"
+        case .deleteMovie(let listID, let sessionID):
+            return "/list/\(listID)/remove_item?api_key=\(ServerPath.apiKey)&session_id=\(sessionID)"
         }
     }
     
@@ -62,11 +71,14 @@ extension MovieAPI: TargetType {
              .requestListMovie,
              .requestListMovieWithPage,
              .getMovieDetail,
-             .getCreatedList:
+             .getCreatedList,
+             .getDetailList:
             return .get
         case .getTokenByLogin,
              .requestCreateSession,
-             .createList:
+             .createList,
+             .addMovie,
+             .deleteMovie:
             return .post
         case .deleteSession,
              .deleteList:
@@ -87,9 +99,12 @@ extension MovieAPI: TargetType {
              .deleteSession,
              .getCreatedList:
             return [.authorization(bearerToken: ServerPath.accessToken)]
-        case .createList:
+        case .createList,
+             .addMovie,
+             .deleteMovie:
             return ["Content-Type": "application/json;charset=utf-8"]
-        case .deleteList:
+        case .deleteList,
+             .getDetailList:
             return nil
         }
     }
@@ -107,11 +122,14 @@ extension MovieAPI: TargetType {
              .requestListMovie,
              .requestListMovieWithPage,
              .getMovieDetail,
-             .createList:
+             .createList,
+             .addMovie,
+             .deleteMovie:
             return JSONEncoding.default
         case .getUserDetail,
              .deleteList,
-             .getCreatedList:
+             .getCreatedList,
+             .getDetailList:
             return URLEncoding.default
         }
     }

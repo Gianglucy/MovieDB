@@ -31,6 +31,8 @@ struct List: Codable {
     var listType: String?
     var name: String?
     var posterPath: String?
+    var createdBy: String?
+    var items: [Movie]?
     
     enum CodingKeys: String, CodingKey {
         case description
@@ -41,6 +43,8 @@ struct List: Codable {
         case listType = "list_type"
         case name
         case posterPath = "poster_path"
+        case createdBy = "created_by"
+        case items
     }
 }
 
