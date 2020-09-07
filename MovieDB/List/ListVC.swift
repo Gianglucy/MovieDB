@@ -8,7 +8,7 @@
 
 import UIKit
 
-protocol ListVCDelegate {
+protocol ListVCDelegate: AnyObject {
     func passData(listID: Int, movieID: Int)
 }
 
@@ -18,7 +18,7 @@ class ListVC: UIViewController {
     var textNilLabel = UILabel()
     var list: [List]?
     var isAdd: Bool = false
-    var delegate: ListVCDelegate?
+    weak var delegate: ListVCDelegate?
     var movieID: Int?
     
     override func viewDidLoad() {

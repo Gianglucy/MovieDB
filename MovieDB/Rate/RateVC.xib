@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="16097.2" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina5_5" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="RateVC" customModule="MovieDB" customModuleProvider="target">
+            <connections>
+                <outlet property="askLabel" destination="XZq-EZ-wke" id="qE3-gb-wS3"/>
+                <outlet property="posterImageView" destination="nbO-9B-H4A" id="jGl-t6-eyG"/>
+                <outlet property="rateButton" destination="ngO-ms-qnO" id="fOK-lY-AmO"/>
+                <outlet property="starEightImageView" destination="Pre-10-XuL" id="z0f-81-27u"/>
+                <outlet property="starFiveImageView" destination="bGW-aM-eKu" id="p1Y-8E-gzO"/>
+                <outlet property="starFourImageView" destination="Qkg-v8-xQH" id="Unb-ms-aE6"/>
+                <outlet property="starNineImageView" destination="7nl-8i-RyL" id="8h1-zr-BFT"/>
+                <outlet property="starOneImageView" destination="OQn-Fv-lQV" id="ojf-fG-TjP"/>
+                <outlet property="starSevenImageView" destination="gM6-U2-jKi" id="B2L-O2-RVB"/>
+                <outlet property="starSixImageView" destination="MEN-Bd-uYq" id="1j4-RW-wqq"/>
+                <outlet property="starStackView" destination="Uf6-Ef-cg2" id="afE-VI-5s0"/>
+                <outlet property="starTenImageView" destination="Apc-lR-RyH" id="G7U-tJ-1oQ"/>
+                <outlet property="starThreeImageView" destination="GIM-B0-f6N" id="AdZ-a4-sxe"/>
+                <outlet property="starTwoImageView" destination="78y-PC-eo8" id="v0V-jQ-HFW"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1V3-DC-0xi">
+                    <rect key="frame" x="16.000000000000004" y="16.000000000000004" width="41.333333333333343" height="41.333333333333343"/>
+                    <constraints>
+                        <constraint firstAttribute="width" secondItem="1V3-DC-0xi" secondAttribute="height" multiplier="1:1" id="6gt-gs-lL3"/>
+                    </constraints>
+                    <state key="normal" image="ic_exit_white"/>
+                    <connections>
+                        <action selector="close:" destination="-1" eventType="touchUpInside" id="mCW-Ev-TX4"/>
+                    </connections>
+                </button>
+                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="nbO-9B-H4A">
+                    <rect key="frame" x="103.66666666666669" y="73.333333333333314" width="207" height="368"/>
+                    <constraints>
+                        <constraint firstAttribute="width" secondItem="nbO-9B-H4A" secondAttribute="height" multiplier="9:16" id="GYK-R8-Nz2"/>
+                    </constraints>
+                </imageView>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XZq-EZ-wke">
+                    <rect key="frame" x="32" y="441.33333333333331" width="350" height="20.333333333333314"/>
+                    <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
+                    <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ngO-ms-qnO">
+                    <rect key="frame" x="16" y="573.66666666666663" width="382" height="40"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="40" id="P16-XM-1jd"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
+                    <state key="normal" title="Rate"/>
+                    <connections>
+                        <action selector="rateMovie:" destination="-1" eventType="touchUpInside" id="vwa-rV-m13"/>
+                    </connections>
+                </button>
+                <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="Uf6-Ef-cg2">
+                    <rect key="frame" x="16" y="477.66666666666669" width="382" height="38.000000000000057"/>
+                    <subviews>
+                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ic_star_empty_cyan" translatesAutoresizingMaskIntoConstraints="NO" id="OQn-Fv-lQV">
+                            <rect key="frame" x="0.0" y="0.0" width="23.666666666666668" height="38"/>
+                        </imageView>
+                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ic_star_empty_cyan" translatesAutoresizingMaskIntoConstraints="NO" id="78y-PC-eo8">
+                            <rect key="frame" x="39.666666666666664" y="0.0" width="24" height="38"/>
+                        </imageView>
+                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ic_star_empty_cyan" translatesAutoresizingMaskIntoConstraints="NO" id="GIM-B0-f6N">
+                            <rect key="frame" x="79.666666666666671" y="0.0" width="23.666666666666671" height="38"/>
+                        </imageView>
+                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ic_star_empty_cyan" translatesAutoresizingMaskIntoConstraints="NO" id="Qkg-v8-xQH">
+                            <rect key="frame" x="119.33333333333334" y="0.0" width="24" height="38"/>
+                        </imageView>
+                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ic_star_empty_cyan" translatesAutoresizingMaskIntoConstraints="NO" id="bGW-aM-eKu">
+                            <rect key="frame" x="159.33333333333334" y="0.0" width="23.666666666666657" height="38"/>
+                        </imageView>
+                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ic_star_empty_cyan" translatesAutoresizingMaskIntoConstraints="NO" id="MEN-Bd-uYq">
+                            <rect key="frame" x="199" y="0.0" width="23.666666666666657" height="38"/>
+                        </imageView>
+                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ic_star_empty_cyan" translatesAutoresizingMaskIntoConstraints="NO" id="gM6-U2-jKi">
+                            <rect key="frame" x="238.66666666666666" y="0.0" width="23.999999999999972" height="38"/>
+                        </imageView>
+                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ic_star_empty_cyan" translatesAutoresizingMaskIntoConstraints="NO" id="Pre-10-XuL">
+                            <rect key="frame" x="278.66666666666669" y="0.0" width="23.666666666666686" height="38"/>
+                        </imageView>
+                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ic_star_empty_cyan" translatesAutoresizingMaskIntoConstraints="NO" id="7nl-8i-RyL">
+                            <rect key="frame" x="318.33333333333331" y="0.0" width="24" height="38"/>
+                        </imageView>
+                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ic_star_empty_cyan" translatesAutoresizingMaskIntoConstraints="NO" id="Apc-lR-RyH">
+                            <rect key="frame" x="358.33333333333331" y="0.0" width="23.666666666666686" height="38"/>
+                        </imageView>
+                    </subviews>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="38" id="r1K-I5-fbT"/>
+                    </constraints>
+                </stackView>
+            </subviews>
+            <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+            <constraints>
+                <constraint firstItem="XZq-EZ-wke" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="32" id="5bL-QZ-LCi"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="ngO-ms-qnO" secondAttribute="trailing" constant="16" id="AU2-Gb-iA0"/>
+                <constraint firstItem="XZq-EZ-wke" firstAttribute="top" secondItem="nbO-9B-H4A" secondAttribute="bottom" id="CQc-rh-Q8U"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="Uf6-Ef-cg2" secondAttribute="trailing" constant="16" id="F8P-G0-xQS"/>
+                <constraint firstItem="ngO-ms-qnO" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="16" id="HH4-zu-ZkK"/>
+                <constraint firstItem="Uf6-Ef-cg2" firstAttribute="top" secondItem="XZq-EZ-wke" secondAttribute="bottom" constant="16" id="HaY-O1-aAr"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="XZq-EZ-wke" secondAttribute="trailing" constant="32" id="NVg-MW-9YL"/>
+                <constraint firstItem="nbO-9B-H4A" firstAttribute="top" secondItem="1V3-DC-0xi" secondAttribute="bottom" constant="16" id="Q4g-iX-lHJ"/>
+                <constraint firstItem="Uf6-Ef-cg2" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="16" id="eAW-Xw-fTH"/>
+                <constraint firstItem="1V3-DC-0xi" firstAttribute="width" secondItem="i5M-Pr-FkT" secondAttribute="width" multiplier="0.1" id="ioC-75-M0b"/>
+                <constraint firstItem="1V3-DC-0xi" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="16" id="lhQ-fj-cTF"/>
+                <constraint firstItem="1V3-DC-0xi" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" constant="16" id="nEt-Bl-qIX"/>
+                <constraint firstItem="ngO-ms-qnO" firstAttribute="top" secondItem="Uf6-Ef-cg2" secondAttribute="bottom" constant="58" id="qnx-bf-udx"/>
+                <constraint firstItem="nbO-9B-H4A" firstAttribute="centerX" secondItem="fnl-2z-Ty3" secondAttribute="centerX" id="txg-Yh-CSc"/>
+                <constraint firstItem="nbO-9B-H4A" firstAttribute="width" secondItem="i5M-Pr-FkT" secondAttribute="width" multiplier="0.5" id="yb7-CU-fM1"/>
+            </constraints>
+            <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
+            <point key="canvasLocation" x="139" y="111"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="ic_exit_white" width="32" height="32"/>
+        <image name="ic_star_empty_cyan" width="32" height="32"/>
+    </resources>
+</document>

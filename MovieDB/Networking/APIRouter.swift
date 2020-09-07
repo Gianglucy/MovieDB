@@ -24,6 +24,8 @@ enum MovieAPI {
     case getDetailList(listID: Int)
     case addMovie(listID: Int, sessionID: String)
     case deleteMovie(listID: Int, sessionID: String)
+    case rateMovie(movieID: Int, sessionID: String)
+    case getAccountState(movieID: Int, sessionID: String)
 }
 
 extension MovieAPI: TargetType {
@@ -61,6 +63,10 @@ extension MovieAPI: TargetType {
             return "/list/\(listID)/add_item?api_key=\(ServerPath.apiKey)&session_id=\(sessionID)"
         case .deleteMovie(let listID, let sessionID):
             return "/list/\(listID)/remove_item?api_key=\(ServerPath.apiKey)&session_id=\(sessionID)"
+        case .rateMovie(let movieID, let sessionID):
+            return "/movie/\(movieID)/rating?api_key=\(ServerPath.apiKey)&session_id=\(sessionID)"
+        case .getAccountState(let movieID, let  sessionID):
+            return "/movie/\(movieID)/account_states?api_key=\(ServerPath.apiKey)&session_id=\(sessionID)"
         }
     }
     
@@ -72,13 +78,15 @@ extension MovieAPI: TargetType {
              .requestListMovieWithPage,
              .getMovieDetail,
              .getCreatedList,
-             .getDetailList:
+             .getDetailList,
+             .getAccountState:
             return .get
         case .getTokenByLogin,
              .requestCreateSession,
              .createList,
              .addMovie,
-             .deleteMovie:
+             .deleteMovie,
+             .rateMovie:
             return .post
         case .deleteSession,
              .deleteList:
@@ -101,10 +109,12 @@ extension MovieAPI: TargetType {
             return [.authorization(bearerToken: ServerPath.accessToken)]
         case .createList,
              .addMovie,
-             .deleteMovie:
+             .deleteMovie,
+             .rateMovie:
             return ["Content-Type": "application/json;charset=utf-8"]
         case .deleteList,
-             .getDetailList:
+             .getDetailList,
+             .getAccountState:
             return nil
         }
     }
@@ -124,12 +134,14 @@ extension MovieAPI: TargetType {
              .getMovieDetail,
              .createList,
              .addMovie,
-             .deleteMovie:
+             .deleteMovie,
+             .rateMovie:
             return JSONEncoding.default
         case .getUserDetail,
              .deleteList,
              .getCreatedList,
-             .getDetailList:
+             .getDetailList,
+             .getAccountState:
             return URLEncoding.default
         }
     }

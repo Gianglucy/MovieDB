@@ -188,4 +188,29 @@ class AuthService {
             }
         }
     }
+    
+    func rateMovie( movieID: Int, sessionID: String, rateValue: Double, completionHandler: @escaping (_ result: Result<ResponseError?, ResponseError>)->()){
+        let parameters: [String: Double] = [
+            "value": rateValue
+        ]
+        APIManager.shared.call(type: MovieAPI.rateMovie(movieID: movieID, sessionID: sessionID), params: parameters){(result: Result<ResponseError?, ResponseError>) in
+            switch result {
+            case .success(let data):
+                completionHandler(.success(data))
+            case .failure(let error):
+                completionHandler(.failure(error))
+            }
+        }
+    }
+    
+    func getAccountState( movieID: Int, sessionID: String, completionHandler: @escaping (_ result: Result<Movie?, ResponseError>)->()){
+        APIManager.shared.call(type: MovieAPI.getAccountState(movieID: movieID, sessionID: sessionID)){(result: Result<Movie?, ResponseError>) in
+            switch result {
+            case .success(let data):
+                completionHandler(.success(data))
+            case .failure(let error):
+                completionHandler(.failure(error))
+            }
+        }
+    }
 }

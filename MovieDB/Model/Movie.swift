@@ -36,6 +36,9 @@ struct Movie: Codable {
     var status: String?
     var tagline: String?
     var mediaType: String?
+    var favorite: Bool?
+    var rated: Bool?
+    var watchlist: Bool?
     
     enum CodingKeys: String, CodingKey {
         case posterPath = "poster_path"
@@ -65,6 +68,18 @@ struct Movie: Codable {
         case status
         case tagline
         case mediaType = "media_type"
+        case favorite
+        case rated
+        case watchlist
+        
+    }
+}
+
+struct Rate: Codable {
+    var  value: Double?
+    
+    enum CodingKeys: String, CodingKey {
+        case value
     }
 }
 

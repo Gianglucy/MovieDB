@@ -96,6 +96,8 @@ extension DetailListVC: UICollectionViewDelegate, UICollectionViewDataSource, UI
 }
 
 extension DetailListVC: MovieCellProtocol {
+    func voteMovie(movie: Movie) {}
+    
     func passIdMovie(id: Int) {
         let movieDetailVC = MovieDetailVC(nibName: "MovieDetailVC", bundle: nil)
         self.navigationController?.pushViewController(movieDetailVC, animated: false)

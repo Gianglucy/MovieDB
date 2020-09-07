@@ -8,7 +8,7 @@
 
 import UIKit
 
-protocol AddListVCDelegate {
+protocol AddListVCDelegate: AnyObject {
     func passData(name: String, description: String)
 }
 
@@ -16,7 +16,7 @@ class AddListVC: UIViewController {
     
     @IBOutlet weak var background: UIView!
     @IBOutlet weak var addListModal: AddListModalView!
-    var delegate: AddListVCDelegate?
+    weak var delegate: AddListVCDelegate?
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()

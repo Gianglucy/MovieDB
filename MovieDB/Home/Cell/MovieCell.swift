@@ -8,10 +8,11 @@
 
 import UIKit
 
-protocol MovieCellProtocol {
+protocol MovieCellProtocol: AnyObject {
     func passIdMovie(id: Int)
     func callAddItem(movieID: Int)
     func callDeleteItem(movieID: Int)
+    func voteMovie(movie: Movie)
 }
 
 class MovieCell: UICollectionViewCell {
@@ -24,8 +25,9 @@ class MovieCell: UICollectionViewCell {
     @IBOutlet weak var addListButton: UIButton!
     
     var movie: Movie?
-    var delegate: MovieCellProtocol?
-    
+    var imagePost: Data?
+    let cache = NSCache<NSString, NSData>()
+    weak var delegate: MovieCellProtocol?
     override func awakeFromNib() {
         super.awakeFromNib()
         setupUI()
@@ -52,11 +54,21 @@ class MovieCell: UICollectionViewCell {
         posterImageView.isUserInteractionEnabled = true
         let tapPoster = UITapGestureRecognizer(target: self, action: #selector(self.touchPoster))
         posterImageView.addGestureRecognizer(tapPoster)
+        
+        voteAverageView.isUserInteractionEnabled = true
+        let tapVoteAverage = UITapGestureRecognizer(target: self, action: #selector(self.touchVote))
+        voteAverageView.addGestureRecognizer(tapVoteAverage)
     }
     
     @objc func touchPoster() {
         if let movie = self.movie {
             delegate?.passIdMovie(id: movie.id ?? 0)
+        }
+    }
+    
+    @objc func touchVote() {
+        if let movie = self.movie {
+            delegate?.voteMovie(movie: movie)
         }
     }
     
@@ -76,6 +88,17 @@ class MovieCell: UICollectionViewCell {
         if let dataMovie: Movie = movie {
             self.movie = dataMovie
         }
+        
+//        if let pathURL: String = movie.posterPath {
+//            let url = URL(string: ServerPath.imageURL + pathURL)
+//            do {
+//                let data = try Data(contentsOf: url!)
+//                cache.setObject(data as NSData, forKey: pathURL as NSString)
+//            } catch { }
+//        } else {
+//            return
+//        }
+        
         voteAverageLabel.text = String(movie.voteAverage ?? 0)
         
         titleLabel.text = movie.originalTitle ?? "No title"
@@ -83,19 +106,38 @@ class MovieCell: UICollectionViewCell {
         
         let queue = DispatchQueue(label: "loadImage",qos: .background)
         queue.async {
-            if let pathURL: String = movie.posterPath {
-                let url = URL(string: ServerPath.imageURL + pathURL)
-                do {
-                    let data = try Data(contentsOf: url!)
-                    DispatchQueue.main.async {
-                        self.posterImageView.image = UIImage(data: data)
-                    }
-                } catch {
-                    
-                }
-            } else {
-                return
-            }
+                        if let pathURL: String = movie.posterPath {
+                            let url = URL(string: ServerPath.imageURL + pathURL)
+                            do {
+                                let data = try Data(contentsOf: url!)
+                                DispatchQueue.main.async {
+                                    self.posterImageView.image = UIImage(data: data)
+                                }
+                            } catch {
+            
+                            }
+                        } else {
+                            return
+                        }
+//            if let dataImage = self.cache.object(forKey: movie.posterPath as! NSString) {
+//                self.loadImage(image: dataImage as Data)
+//            } else {
+//                if let pathURL: String = movie.posterPath {
+//                    let url = URL(string: ServerPath.imageURL + pathURL)
+//                    do {
+//                        let data = try Data(contentsOf: url!)
+//                        self.cache.setObject(data as NSData, forKey: pathURL as NSString)
+//                    } catch { }
+//                } else {
+//                    return
+//                }
+//            }
         }
     }
+    
+//    func loadImage(image: Data) {
+//        DispatchQueue.main.async {
+//            self.posterImageView.image = UIImage(data: image)
+//        }
+//    }
 }

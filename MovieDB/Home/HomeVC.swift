@@ -174,6 +174,15 @@ extension HomeVC: UICollectionViewDelegate, UICollectionViewDataSource, UICollec
 }
 
 extension HomeVC: MovieCellProtocol {
+    func voteMovie(movie: Movie) {
+        let rateVC = RateVC(nibName: "RateVC", bundle: nil)
+        rateVC.movie = movie
+        let navController = UINavigationController(rootViewController: rateVC)
+        navController.modalPresentationStyle = .fullScreen
+        navController.modalTransitionStyle = .coverVertical
+        self.present(navController, animated: true, completion: nil)
+    }
+    
     func callDeleteItem(movieID: Int) {}
     
     func callAddItem(movieID: Int) {
