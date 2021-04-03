@@ -27,14 +27,23 @@ class APIManager {
                 case .success(_):
                     let decoder = JSONDecoder()
                     if let jsonData = data.data {
-                        let result = try! decoder.decode(T.self, from: jsonData)
-                        completionHandler(.success(result))
+                        do {
+                            let result = try decoder.decode(T.self, from: jsonData)
+                            completionHandler(.success(result))
+                        } catch {
+                            print("==== Error Decoder ====")
+                        }
                     }
                     break
                 case .failure(_):
                     let decoder = JSONDecoder()
-                    if let jsonData = data.data, let error = try? decoder.decode(ResponseError.self, from: jsonData) {
-                        completionHandler(.failure(error))
+                    if let jsonData = data.data {
+                        do {
+                            let error = try decoder.decode(ResponseError.self, from: jsonData)
+                            completionHandler(.failure(error))
+                        } catch {
+                            print("==== Error Unknown ====")
+                        }
                     }
                     break
                 }

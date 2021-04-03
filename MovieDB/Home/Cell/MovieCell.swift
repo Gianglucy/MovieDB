@@ -84,7 +84,7 @@ class MovieCell: UICollectionViewCell {
         }
     }
     
-    func configCell(movie: Movie) {
+    func configCell(movie: Movie?) {
         if let dataMovie: Movie = movie {
             self.movie = dataMovie
         }
@@ -99,15 +99,16 @@ class MovieCell: UICollectionViewCell {
 //            return
 //        }
         
-        voteAverageLabel.text = String(movie.voteAverage ?? 0)
-        
-        titleLabel.text = movie.originalTitle ?? "No title"
-        overviewLabel.text = movie.overview ?? "No decription"
+        voteAverageLabel.text = String(movie?.voteAverage ?? 0)
+            
+        titleLabel.text = movie?.originalTitle ?? "No title"
+        overviewLabel.text = movie?.overview ?? "No decription"
         
         let queue = DispatchQueue(label: "loadImage",qos: .background)
         queue.async {
-                        if let pathURL: String = movie.posterPath {
+                        if let pathURL: String = movie?.posterPath {
                             let url = URL(string: ServerPath.imageURL + pathURL)
+                            print(url!)
                             do {
                                 let data = try Data(contentsOf: url!)
                                 DispatchQueue.main.async {

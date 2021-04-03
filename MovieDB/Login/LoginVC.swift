@@ -16,26 +16,24 @@ class LoginVC: UIViewController {
     @IBOutlet weak var passTextField: UITextField!
     @IBOutlet weak var loginButton: UIButton!
     
+    var loginViewModel: LoginViewModel?
+    
     let defaults = UserDefaults.standard
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        setupVM()
         requestToken()
         setupUI()
     }
     
+    func setupVM() {
+        loginViewModel = LoginViewModel()
+        loginViewModel?.delegate = self
+    }
+    
     func requestToken() {
-        AuthService.shared.getToken(){ (result) in
-            switch result {
-            case .success(let success):
-                guard let requestTokenString = success?.requestToken else { return }
-                self.defaults.set(requestTokenString, forKey: defaultsKey.token)
-            case .failure(let error):
-                guard let status = error.statusCode else { return }
-                guard let message = error.statusMessage else { return }
-                Alert.instance.oneOption(this: self, title: "ERROR\(status)", content: message , titleButton: "OK") {() in }
-            }
-        }
+        loginViewModel?.requestToken()
     }
     
     func setupUI() {
@@ -72,26 +70,28 @@ class LoginVC: UIViewController {
             if let token = self.defaults.string(forKey: defaultsKey.token) {
                 guard let userName = userNameTextField.text else { return }
                 guard let passWord = passTextField.text else { return }
-                //                let headers: HTTPHeaders = [.authorization(bearerToken: ServerPath.accessToken)]
-                AuthService.shared.getTokenByLogin(userName: userName, passWord: passWord, token: token){ (result) in
-                    switch result {
-                    case .success:
-                        self.defaults.set(self.userNameTextField.text, forKey: defaultsKey.iD)
-                        self.defaults.set(self.passTextField.text, forKey: defaultsKey.password)
-                        self.defaults.set(true, forKey: defaultsKey.loginStatus)
-                        Alert.instance.oneOption(this: self, title: "Successful", content: "SignUp successful", titleButton: "OK") {() in }
-                        let tabBarVC = TabBarVC(nibName: "TabBarVC", bundle: nil)
-                        let keywindow = UIApplication.shared.windows.first!
-                        keywindow.rootViewController = tabBarVC
-                    case .failure(let error):
-                        guard let status = error.statusCode else { return }
-                        guard let message = error.statusMessage else { return }
-                        Alert.instance.oneOption(this: self, title: "ERROR\(status)", content: message , titleButton: "OK") {() in }
-                    }
-                }
+                loginViewModel?.login(userName: userName, passWord: passWord, token: token)
             } else {
-                Alert.instance.oneOption(this: self, title: "ERROR", content: "Connect fail!!!", titleButton: "OK") {() in }
+                Alert.instance.oneOption(this: self, title: "ERROR", content: "Connected fail!!!", titleButton: "OK") {() in }
             }
         }
+    }
+}
+
+extension LoginVC: LoginViewModelDelegate {
+    func loginSuccess() {
+        self.defaults.set(self.userNameTextField.text, forKey: defaultsKey.iD)
+        self.defaults.set(self.passTextField.text, forKey: defaultsKey.password)
+        self.defaults.set(true, forKey: defaultsKey.loginStatus)
+        Alert.instance.oneOption(this: self, title: "Successful", content: "SignUp successful", titleButton: "OK") {() in }
+        let tabBarVC = TabBarVC(nibName: "TabBarVC", bundle: nil)
+        let keywindow = UIApplication.shared.windows.first!
+        keywindow.rootViewController = tabBarVC
+    }
+    
+    func handleError(error: ResponseError) {
+        guard let status = error.statusCode else { return }
+        guard let message = error.statusMessage else { return }
+        Alert.instance.oneOption(this: self, title: "ERROR\(status)", content: message , titleButton: "OK") {() in }
     }
 }

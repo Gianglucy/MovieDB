@@ -18,15 +18,21 @@ class HomeVC: UIViewController {
     var deviceHeight:CGFloat!
     let spacing:CGFloat = 10
     let col = 2
-    var movieData: [Movie]?
     var page: Int = 1
     var isLoadMore = true
+    var homeViewModel: HomeViewModel?
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        setupVM()
         requestToken()
-        getListMovie(){()in}
+        homeViewModel?.getListMovie(){()in}
         setupUI()
+    }
+    
+    func setupVM() {
+        homeViewModel = HomeViewModel()
+        homeViewModel?.delegate = self
     }
     
     func setupUI() {
@@ -43,103 +49,27 @@ class HomeVC: UIViewController {
     }
     
     @objc func refresh() {
-        self.movieData = nil
+        homeViewModel?.movieData = nil
         self.page = 1
-        getListMovie(){() in
+        homeViewModel?.getListMovie(){() in
             self.refreshControl.endRefreshing()
         }
     }
     
-    func getListMovie( completion:@escaping () -> Void ) {
-        AuthService.shared.requestListMovie(){ (result) in
-            switch result {
-            case .success(let data):
-                self.movieData = data?.results
-                DispatchQueue.main.async {
-                    self.movieCollectionView.reloadData()
-                    completion()
-                }
-            case .failure(let error):
-                guard let status = error.statusCode else { return }
-                guard let message = error.statusMessage else { return }
-                Alert.instance.oneOption(this: self, title: "ERROR\(status)", content: message , titleButton: "OK") {() in }
-            }
-        }
-    }
-    
     func requestToken() {
-        AuthService.shared.getToken(){ (result) in
-            switch result {
-            case .success(let success):
-                guard let requestTokenString = success?.requestToken else { return }
-                self.defaults.set(requestTokenString, forKey: defaultsKey.token)
-                self.createRequestTokenString(token: requestTokenString)
-            case .failure(let error):
-                guard let status = error.statusCode else { return }
-                guard let message = error.statusMessage else { return }
-                Alert.instance.oneOption(this: self, title: "ERROR\(status)", content: message , titleButton: "OK") {() in }
-            }
-        }
+        homeViewModel?.requestToken()
     }
     
-    func createRequestTokenString(token: String) {
-        guard let userName = self.defaults.string(forKey: defaultsKey.iD) else { return }
-        guard let passWord = self.defaults.string(forKey: defaultsKey.password) else { return }
-        AuthService.shared.getTokenByLogin(userName: userName, passWord: passWord, token: token){ (result) in
-            switch result {
-            case .success(let data):
-                guard let tokenLoginRequest = data?.requestToken else { return }
-                self.defaults.set(tokenLoginRequest, forKey: defaultsKey.token)
-                self.createSessionID(token: tokenLoginRequest)
-            case .failure(let error):
-                guard let status = error.statusCode else { return }
-                guard let message = error.statusMessage else { return }
-                Alert.instance.oneOption(this: self, title: "ERROR\(status)", content: message , titleButton: "OK") {() in }
-            }
-        }
-    }
-    
-    func createSessionID(token: String) {
-        AuthService.shared.requestCreateSession(token: token){ (result) in
-            switch result {
-            case .success(let data):
-                guard let sessionID = data?.sessionId else { return }
-                print("=))))))) \(sessionID)")
-                self.defaults.set(sessionID, forKey: defaultsKey.sessionID)
-            case .failure(let error):
-                guard let status = error.statusCode else { return }
-                guard let message = error.statusMessage else { return }
-                Alert.instance.oneOption(this: self, title: "ERROR\(status)", content: message , titleButton: "OK") {() in }
-            }
-        }
-    }
-    
-    func getListMovieWithPage(page: Int) {
-        AuthService.shared.requestListMovieWithPage(page: page){ (result) in
-            switch result {
-            case .success(let data):
-                self.isLoadMore = true
-                self.movieData! += (data?.results)!
-                DispatchQueue.main.async {
-                    self.movieCollectionView.reloadData()
-                }
-            case .failure(let error):
-                guard let status = error.statusCode else { return }
-                guard let message = error.statusMessage else { return }
-                Alert.instance.oneOption(this: self, title: "ERROR\(status)", content: message , titleButton: "OK") {() in }
-            }
-        }
-    }
 }
 
 extension HomeVC: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return movieData?.count ?? 0
+        return homeViewModel?.movieData?.count ?? 0
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = movieCollectionView.dequeueReusableCell(withReuseIdentifier: "MovieCell", for: indexPath) as! MovieCell
-        guard let data = self.movieData else { return cell }
+        guard let data = homeViewModel?.movieData else { return cell }
         cell.configCell(movie: data[indexPath.row])
         cell.delegate = self
         return cell
@@ -163,11 +93,11 @@ extension HomeVC: UICollectionViewDelegate, UICollectionViewDataSource, UICollec
     }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        if scrollView.contentSize.height - scrollView.contentOffset.y - scrollView.frame.height < 0 && self.movieData != nil {
+        if scrollView.contentSize.height - scrollView.contentOffset.y - scrollView.frame.height < 0 && homeViewModel?.movieData != nil {
             if isLoadMore {
                 isLoadMore = false
                 self.page += 1
-                self.getListMovieWithPage(page: self.page)
+                homeViewModel?.getListMovieWithPage(page: self.page)
             }
         }
     }
@@ -205,21 +135,38 @@ extension HomeVC: ListVCDelegate {
     func passData(listID: Int, movieID: Int) {
         guard let sessionID = self.defaults.string(forKey: defaultsKey.sessionID) else { return }
         self.dismiss(animated: true){()in
-            AuthService.shared.addMovie(listID: listID, sessionID: sessionID, movieID: movieID){ (result) in
-                switch result {
-                case .success(let data):
-                    guard let message = data!.statusMessage else { return }
-                    Alert.instance.oneOption(this: self, title: "SUCCESS", content: message , titleButton: "OK") {() in }
-                case .failure(let error):
-                    guard let status = error.statusCode else { return }
-                    guard let message = error.statusMessage else { return }
-                    if status == 8 {
-                        Alert.instance.oneOption(this: self, title: "NOTIFICATION", content: message , titleButton: "OK") {() in }
-                    } else {
-                        Alert.instance.oneOption(this: self, title: "ERROR\(status)", content: message , titleButton: "OK") {() in }
-                    }
-                }
-            }
+            self.homeViewModel?.addMovie(listID: listID, sessionID: sessionID, movieID: movieID)
+        }
+    }
+}
+
+extension HomeVC: HomeViewModelDelegate {
+    func addMovieSuccess(data: ResponseError) {
+        guard let message = data.statusMessage else { return }
+        Alert.instance.oneOption(this: self, title: "SUCCESS", content: message , titleButton: "OK") {() in }
+    }
+    
+    func successGetListMovie() {
+        DispatchQueue.main.async {
+            self.movieCollectionView.reloadData()
+        }
+    }
+    
+    func successGetListMovieWithPage() {
+        self.isLoadMore = true
+        DispatchQueue.main.async {
+            self.movieCollectionView.reloadData()
+            self.refreshControl.endRefreshing()
+        }
+    }
+    
+    func handleError(error: ResponseError) {
+        guard let status = error.statusCode else { return }
+        guard let message = error.statusMessage else { return }
+        if status == 8 {
+            Alert.instance.oneOption(this: self, title: "NOTIFICATION", content: message , titleButton: "OK") {() in }
+        } else {
+            Alert.instance.oneOption(this: self, title: "ERROR\(status)", content: message , titleButton: "OK") {() in }
         }
     }
 }
