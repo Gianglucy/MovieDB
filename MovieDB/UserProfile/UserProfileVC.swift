@@ -8,6 +8,7 @@
 
 import UIKit
 import Alamofire
+import RealmSwift
 
 class UserProfileVC: UIViewController {
     
@@ -24,11 +25,14 @@ class UserProfileVC: UIViewController {
     
     let defaults = UserDefaults.standard
     var dataUser: User?
+    var userProfileVM: UserProfileViewModel?
+    let realm = try! Realm()
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        setupVM()
         if let sessionID = self.defaults.string(forKey: defaultsKey.sessionID) {
-            requestUser(sessionID: sessionID)
+            userProfileVM?.requestUser(sessionID: sessionID)
         }
         setupUI()
     }
@@ -36,6 +40,11 @@ class UserProfileVC: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.tabBarController?.tabBar.isHidden = false
+    }
+    
+    func setupVM() {
+        userProfileVM = UserProfileViewModel()
+        userProfileVM?.delegate = self
     }
     
     func setupUI() {
@@ -72,30 +81,52 @@ class UserProfileVC: UIViewController {
         self.logoutButton.layer.cornerRadius = Constants.cornerRadius
     }
     
+    func setDefaultRealmForUser(username: String) {
+        var config = Realm.Configuration()
+        
+        // Use the default directory, but replace the filename with the username
+        config.fileURL = config.fileURL!.deletingLastPathComponent().appendingPathComponent("\(username).realm")
+        // Set this as the configuration used for the default Realm
+        Realm.Configuration.defaultConfiguration = config
+        
+    }
+    
     @objc func list() {
         let listVC = ListVC(nibName: "ListVC", bundle: nil)
         navigationController?.pushViewController(listVC, animated: true)
     }
     
-    func requestUser(sessionID: String) {
-        AuthService.shared.getUserDetail(sessionID: sessionID){ (result) in
-            switch result {
-            case .success(let data):
-                self.dataUser = data
-                self.defaults.set(data?.id, forKey: defaultsKey.accountID)
-                DispatchQueue.main.async {
-                    self.languageLabel.text = self.dataUser?.language
-                    self.adultLabel.text = self.dataUser?.includeAdult?.description
-                    self.nameLabel.text = self.dataUser?.name
-                    self.userNameLabel.text = self.dataUser?.username
-                }
-            case .failure(let error):
-                guard let status = error.statusCode else { return }
-                guard let message = error.statusMessage else { return }
-                Alert.instance.oneOption(this: self, title: "ERROR\(status)", content: message , titleButton: "OK") {() in }
-            }
-        }
-    }
+//    func requestUser(sessionID: String) {
+//        AuthService.shared.getUserDetail(sessionID: sessionID){ (result) in
+//            switch result {
+//            case .success(let data):
+//                self.dataUser = data
+//                let user = Users()
+//                user.avatar?.url = data?.avatar?.hash ?? ""
+//                user.country = data?.country
+//                user.id = data?.id ?? 0
+//                user.language = data?.language
+//                user.name = data?.name
+//                user.includeAdult = data?.includeAdult ?? false
+//                user.username = data?.username
+//                let realm = try! Realm()
+//                try! realm.write {
+//                    realm.add(user)
+//                }
+//                self.defaults.set(data?.id, forKey: defaultsKey.accountID)
+//                DispatchQueue.main.async {
+//                    self.languageLabel.text = self.dataUser?.language
+//                    self.adultLabel.text = self.dataUser?.includeAdult?.description
+//                    self.nameLabel.text = self.dataUser?.name
+//                    self.userNameLabel.text = self.dataUser?.username
+//                }
+//            case .failure(let error):
+//                guard let status = error.statusCode else { return }
+//                guard let message = error.statusMessage else { return }
+//                Alert.instance.oneOption(this: self, title: "ERROR\(status)", content: message , titleButton: "OK") {() in }
+//            }
+//        }
+//    }
     
     @IBAction func logout(_ sender: UIButton) {
         Alert.instance.twoOption(this: self, title: "Notification", content: "Do you want to logout ?", titleButtonFirst: "Yes", titleButtonSecond: "No",
@@ -121,5 +152,36 @@ class UserProfileVC: UIViewController {
                                  second: {() -> () in
                                     
         })
+    }
+}
+
+extension UserProfileVC: UserProfileViewModelDelegate{
+    func successRequestUser(data: User) {
+        self.dataUser = data
+        let user = Users()
+        user.avatar?.url = data.avatar?.hash ?? ""
+        user.country = data.country
+        user.id = data.id ?? 0
+        user.language = data.language
+        user.name = data.name
+        user.includeAdult = data.includeAdult ?? false
+        user.username = data.username
+        let realm = try! Realm()
+        try! realm.write {
+            realm.add(user)
+        }
+        self.defaults.set(data.id, forKey: defaultsKey.accountID)
+        DispatchQueue.main.async {
+            self.languageLabel.text = self.dataUser?.language
+            self.adultLabel.text = self.dataUser?.includeAdult?.description
+            self.nameLabel.text = self.dataUser?.name
+            self.userNameLabel.text = self.dataUser?.username
+        }
+    }
+    
+    func handleError(error: ResponseError) {
+        guard let status = error.statusCode else { return }
+        guard let message = error.statusMessage else { return }
+        Alert.instance.oneOption(this: self, title: "ERROR\(status)", content: message , titleButton: "OK") {() in }
     }
 }

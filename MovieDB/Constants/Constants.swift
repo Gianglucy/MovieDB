@@ -16,6 +16,9 @@ struct Colors {
     static let blueCustome = UIColor(red: 137/255, green: 205/255, blue: 165/255, alpha: 1)
     static let background = UIColor(red: 5/255, green: 37/255, blue: 65/255, alpha: 1)
     static let organgeCustome = UIColor(red: 222/255, green: 87/255, blue: 75/255, alpha: 1)
+    static let userChat = UIColor(red: 219/255, green: 243/255, blue: 252/255, alpha: 1)
+    static let ortherChat = UIColor(red: 242/255, green: 246/255, blue: 249/255, alpha: 1)
+    static let inputChat = UIColor(red: 241/255, green: 240/255, blue: 244/255, alpha: 1)
 }
 
 struct Fonts {

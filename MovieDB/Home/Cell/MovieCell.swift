@@ -100,7 +100,11 @@ class MovieCell: UICollectionViewCell {
 //        }
         
         voteAverageLabel.text = String(movie?.voteAverage ?? 0)
+<<<<<<< HEAD
+            
+=======
         
+>>>>>>> 99dde18db843c4679426aa7bc93dcc01bbe59369
         titleLabel.text = movie?.originalTitle ?? "No title"
         overviewLabel.text = movie?.overview ?? "No decription"
         
@@ -108,6 +112,7 @@ class MovieCell: UICollectionViewCell {
         queue.async {
                         if let pathURL: String = movie?.posterPath {
                             let url = URL(string: ServerPath.imageURL + pathURL)
+                            print(url!)
                             do {
                                 let data = try Data(contentsOf: url!)
                                 DispatchQueue.main.async {

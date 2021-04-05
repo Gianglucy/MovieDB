@@ -7,6 +7,8 @@
 //
 
 import Foundation
+import RealmSwift
+import Realm
 
 struct User: Codable {
     var avatar: Gravatar?
@@ -34,4 +36,18 @@ struct Gravatar: Codable {
     enum CodingKeys: String, CodingKey {
         case hash
     }
+}
+
+class Users: Object {
+    @objc dynamic var avatar: Avatar?
+    @objc dynamic var id: Int = 0
+    @objc dynamic var country: String?
+    @objc dynamic var language: String?
+    @objc dynamic var name: String?
+    @objc dynamic var includeAdult: Bool = false
+    @objc dynamic var username: String?
+}
+
+class Avatar: Object {
+    @objc dynamic var url: String = ""
 }

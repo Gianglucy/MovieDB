@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>806478361553-8a7uaheqdri02cccmfrvah3gtf6ha01d.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.806478361553-8a7uaheqdri02cccmfrvah3gtf6ha01d</string>
+	<key>API_KEY</key>
+	<string>AIzaSyB_9eqFDxnW2s1zPq1LdS49zruPlJqQdCY</string>
+	<key>GCM_SENDER_ID</key>
+	<string>806478361553</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.luunguyenduc1995.MovieDB</string>
+	<key>PROJECT_ID</key>
+	<string>moviedb-288808</string>
+	<key>STORAGE_BUCKET</key>
+	<string>moviedb-288808.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:806478361553:ios:59ad847c3f6272fa2b26f0</string>
+	<key>DATABASE_URL</key>
+	<string>https://moviedb-288808.firebaseio.com</string>
+</dict>
+</plist>
