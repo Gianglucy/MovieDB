@@ -189,16 +189,6 @@
 			path = Common;
 			sourceTree = "<group>";
 		};
-		18669B622511FBBD0004C5E3 /* ViewModels */ = {
-			isa = PBXGroup;
-			children = (
-				18669B632511FE430004C5E3 /* LoginViewModel.swift */,
-				18669B65251209E30004C5E3 /* HomeViewModel.swift */,
-				18669B672512F99B0004C5E3 /* UserProfileViewModel.swift */,
-			);
-			path = ViewModels;
-			sourceTree = "<group>";
-		};
 		187737D124EA4089005F1779 = {
 			isa = PBXGroup;
 			children = (
@@ -223,7 +213,6 @@
 			children = (
 				18EA6E0F253D6A5900AD5130 /* LeftMenu */,
 				180DEF982539A1CB002DBCB0 /* Test */,
-				18669B622511FBBD0004C5E3 /* ViewModels */,
 				18669B612511FB930004C5E3 /* Common */,
 				1814F32B250F17D20068FBB8 /* CrashTest */,
 				187B4C2C250A2B010043EDF5 /* Draw */,
@@ -284,6 +273,7 @@
 		1877380324EB7389005F1779 /* Login */ = {
 			isa = PBXGroup;
 			children = (
+				18669B632511FE430004C5E3 /* LoginViewModel.swift */,
 				187737F124EA4149005F1779 /* LoginVC.swift */,
 				187737F224EA4149005F1779 /* LoginVC.xib */,
 			);
@@ -293,6 +283,7 @@
 		1877380624EB8814005F1779 /* Home */ = {
 			isa = PBXGroup;
 			children = (
+				18669B65251209E30004C5E3 /* HomeViewModel.swift */,
 				18DB302C24F3A10800967FB8 /* Cell */,
 				1877380724EB8832005F1779 /* HomeVC.swift */,
 				1877380824EB8832005F1779 /* HomeVC.xib */,
@@ -312,6 +303,7 @@
 		1877381024EC153B005F1779 /* UserProfile */ = {
 			isa = PBXGroup;
 			children = (
+				18669B672512F99B0004C5E3 /* UserProfileViewModel.swift */,
 				1877381124EC158B005F1779 /* UserProfileVC.swift */,
 				1877381224EC158B005F1779 /* UserProfileVC.xib */,
 			);

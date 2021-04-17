@@ -16,7 +16,7 @@ protocol HomeViewModelDelegate {
 }
 
 class HomeViewModel {
-    var delegate: HomeViewModelDelegate?
+    var delegate: HomeViewModelDelegate?
     let defaults = UserDefaults.standard
     var movieData: [Movie]?
     

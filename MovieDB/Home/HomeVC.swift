@@ -109,7 +109,7 @@ extension HomeVC: MovieCellProtocol {
         rateVC.movie = movie
         let navController = UINavigationController(rootViewController: rateVC)
         navController.modalPresentationStyle = .fullScreen
-        navController.modalTransitionStyle = .coverVertical
+        navController.modalTransitionStyle = .flipHorizontal
         self.present(navController, animated: true, completion: nil)
     }
     
